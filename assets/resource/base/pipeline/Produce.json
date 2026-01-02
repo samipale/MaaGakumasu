@@ -291,17 +291,20 @@
             "type": "DoNothing",
             "param": {}
         },
+        "rate_limit": 2000,
         "next": [
             "ProduceExit",
-            "[JumpBack]ProduceOptionsFlag",
-            "[JumpBack]ProduceChooseEventFlag",
             "[JumpBack]ProduceCardsFlag",
             "[JumpBack]ProduceChooseCardsFlag",
             "[JumpBack]ProduceChooseDrinkFlag",
             "[JumpBack]ProduceChooseItemFlag",
             "[JumpBack]ProduceChooseStrengthenFlag",
+            "[JumpBack]ProduceChooseEventFlag",
+            "[JumpBack]ProduceOptionsFlag",
+            "[JumpBack]ProduceShoppingFlag",
+            "[JumpBack]ProduceKeepDrinkFlag",
+            "ProduceFailedFlag",
             "[JumpBack]ProduceButton",
-            "[JumpBack]ProduceSkip",
             "[JumpBack]Click_1"
         ]
     },
@@ -328,12 +331,8 @@
             "param": {
                 "template": [
                     "next.png",
-                    "produce/decide.png",
-                    "produce/yes.png",
-                    "produce/decide.png",
-                    "produce/start.png",
-                    "produce/event.png",
-                    "produce/drink_no.png",
+                    "cancel.png",
+                    "close_icon.png",
                     "produce/close.png"
                 ],
                 "order_by": "Score",
@@ -613,9 +612,10 @@
             "type": "Click",
             "param": {}
         },
+        "post_wait_freezes": 100,
+        "timeout": 5000,
         "next": [
-            "ProduceShoppingDecide",
-            "[JumpBack]Click_1"
+            "ProduceShoppingDecide"
         ]
     },
     "ProduceShoppingDecide": {
@@ -643,13 +643,15 @@
         "recognition": {
             "type": "TemplateMatch",
             "param": {
-                "template": "produce/shop_exit.png"
+                "template": "produce/shop_exit.png",
+                "threshold": 0.9
             }
         },
         "action": {
             "type": "Click",
             "param": {}
-        }
+        },
+        "pre_delay": 200
     },
     "ProduceChooseStrengthenFlag": {
         "recognition": {
@@ -702,7 +704,6 @@
         "next": [
             "ProduceGeneration",
             "[JumpBack]ProduceNext",
-            "[JumpBack]ProduceSkip",
             "[JumpBack]ProduceDecide",
             "[JumpBack]Click_1"
         ]
@@ -727,6 +728,7 @@
         "next": [
             "ProduceFinished",
             "[JumpBack]ProduceNext",
+            "[JumpBack]CloseRoundButton",
             "[JumpBack]Click_1"
         ]
     },
@@ -745,7 +747,8 @@
             "HomeFlag",
             "[JumpBack]ProduceFollow",
             "[JumpBack]ProduceSkip",
-            "[JumpBack]CloseRoundButton"
+            "[JumpBack]CloseRoundButton",
+            "[JumpBack]ProduceEventResultButton"
         ]
     },
     "ProduceFollow": {
@@ -787,7 +790,54 @@
             "type": "Click",
             "param": {}
         },
-        "pre_delay": 100,
+        "pre_delay": 200,
+        "post_delay": 2000
+    },
+    "ProduceFailedFlag": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "produce/exam_failed.png"
+                ],
+                "roi": [
+                    0,
+                    700,
+                    720,
+                    250
+                ],
+                "threshold": 0.9
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "ProduceFailedAuto"
+            }
+        }
+    },
+    "ProduceKeepDrinkFlag": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "produce/drink_full_on_keep_window.png"
+                ],
+                "roi": [
+                    0,
+                    0,
+                    720,
+                    300
+                ],
+                "threshold": 0.9
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "ProduceKeepDrinkAuto"
+            }
+        },
         "post_delay": 100
     }
 }

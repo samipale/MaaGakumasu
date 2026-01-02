@@ -18,6 +18,18 @@
       }
     }
   },
+  "ProduceEventResultButton": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "produce/ok.png"
+      }
+    },
+    "action": {
+      "type": "Click",
+      "param": {}
+    }
+  },
   "ProduceNext": {
     "recognition": {
       "type": "TemplateMatch",
@@ -38,6 +50,7 @@
           "produce/skip_chat.png",
           "produce/skip_chat_1.png"
         ],
+        "threshold": 0.8,
         "roi": [
           553,
           1154,
@@ -50,7 +63,6 @@
       "type": "Click",
       "param": {}
     },
-    "pre_delay": 100,
     "post_delay": 100
   },
   "ProduceSkipShow": {
@@ -124,6 +136,7 @@
       "type": "Click",
       "param": {}
     },
+    "post_delay": 1000,
     "next": [
       "ProduceTakeRest"
     ]
@@ -132,7 +145,14 @@
     "recognition": {
       "type": "TemplateMatch",
       "param": {
-        "template": "produce/rest_take.png"
+        "template": "produce/rest_take.png",
+        "roi": [
+          360,
+          1100,
+          360,
+          180
+        ],
+        "threshold": 0.9
       }
     },
     "action": {
@@ -186,6 +206,46 @@
           947,
           393,
           97
+        ]
+      }
+    },
+    "action": {
+      "type": "DoNothing",
+      "param": {}
+    }
+  },
+  "ProduceRecognitionMoveCards": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": [
+          "produce/move_cards.png"
+        ],
+        "roi": [
+          0,
+          0,
+          300,
+          90
+        ]
+      }
+    },
+    "action": {
+      "type": "DoNothing",
+      "param": {}
+    }
+  },
+  "ProduceRecognitionChooseMoveCards": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": [
+          "produce/choose_move_cards.png"
+        ],
+        "roi": [
+          0,
+          90,
+          720,
+          400
         ]
       }
     },
@@ -283,13 +343,130 @@
         "template": [
           "produce/week_1.png",
           "produce/week_7.png",
-          "produce/week_lesson.png"
+          "produce/week_lesson.png",
+          "produce/week_go_out.png"
         ],
         "threshold": 0.9
       }
     },
     "action": {
       "type": "DoNothing",
+      "param": {}
+    }
+  },
+  "ProduceRecognitionPushEvent": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": [
+          "produce/week_1.png"
+        ],
+        "roi": [
+          0,
+          0,
+          230,
+          165
+        ],
+        "threshold": 0.9
+      }
+    },
+    "action": {
+      "type": "DoNothing",
+      "param": {}
+    }
+  },
+  "ProduceRecognitionLessonEvent": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": [
+          "produce/week_lesson.png"
+        ],
+        "roi": [
+          0,
+          0,
+          230,
+          165
+        ],
+        "threshold": 0.9
+      }
+    },
+    "action": {
+      "type": "DoNothing",
+      "param": {}
+    }
+  },
+  "ProduceRecognitionGoOutEvent": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": [
+          "produce/week_go_out.png"
+        ],
+        "roi": [
+          0,
+          0,
+          230,
+          165
+        ],
+        "threshold": 0.9
+      }
+    },
+    "action": {
+      "type": "DoNothing",
+      "param": {}
+    }
+  },
+  "ProduceRecognitionWeek5Event": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": [
+          "produce/week_5.png"
+        ],
+        "roi": [
+          0,
+          0,
+          230,
+          165
+        ]
+      }
+    },
+    "action": {
+      "type": "DoNothing",
+      "param": {}
+    }
+  },
+  "ProduceRecognitionUncheckedMark": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": [
+          "produce/unchecked_mark.png"
+        ],
+        "threshold": 0.9
+      }
+    },
+    "action": {
+      "type": "DoNothing",
+      "param": {}
+    }
+  },
+  "ProduceDrinkNoButton": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "template": "produce/drink_no.png",
+        "roi": [
+          0,
+          780,
+          720,
+          500
+        ]
+      }
+    },
+    "action": {
+      "type": "Click",
       "param": {}
     }
   },
