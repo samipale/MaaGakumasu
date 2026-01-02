@@ -729,21 +729,6 @@ class ProduceStrengthenAuto(CustomAction):
         return True
 
 
-@AgentServer.custom_action("ProduceFailedAuto")
-class ProduceFailedAuto(CustomAction):
-    """
-        处理考试失败的情况
-        目前默认直接结束任务，让玩家自行选择是否重新挑战
-    """
-    def run(
-            self,
-            context: Context,
-            argv: CustomAction.RunArg,
-    ) -> bool:
-        logger.warning("考试失败")
-        context.tasker.post_stop()
-        return True
-
 @AgentServer.custom_action("ProduceKeepDrinkAuto")
 class ProduceKeepDrinkAuto(CustomAction):
     """

@@ -810,10 +810,11 @@
             }
         },
         "action": {
-            "type": "Custom",
-            "param": {
-                "custom_action": "ProduceFailedAuto"
-            }
+            "type": "StopTask",
+            "param": {}
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "考试失败，停止任务"
         }
     },
     "ProduceKeepDrinkFlag": {
