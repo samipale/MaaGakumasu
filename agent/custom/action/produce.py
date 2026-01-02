@@ -15,11 +15,11 @@ import numpy as np
 from PIL import Image
 from datetime import datetime
 
-def save_train_data(image, datatype, datainfo):
+def save_train_data(image, datatype):
     current_time = datetime.now()
     save_path = r'D:\scripts\MFAAvalonia-v2.2.7-win-x64\debug\train'
     timestamp = current_time.strftime("%Y%m%d_%H%M%S_%f")[:-3]  # %f是微秒，取前3位得到毫秒
-    file_base = f"{datatype}-{datainfo}-{timestamp}.png"
+    file_base = f"cards-{datatype}-{timestamp}.png"
     filename = os.path.join(save_path, file_base)
     height, width, _ = image.shape
     rgb_array = image[:, :, ::-1]
@@ -620,7 +620,7 @@ class ProduceCardsAuto(CustomAction):
                 if reco_detail.hit:
                     logger.info("无手牌")
                     context.run_task("ProduceRecognitionSkipRound")
-                    time.sleep(time_wait)
+                    time.sleep(5)
 
 
 

@@ -333,7 +333,8 @@
                     "next.png",
                     "cancel.png",
                     "close_icon.png",
-                    "produce/close.png"
+                    "produce/close.png",
+                    "produce/cards_get.png"
                 ],
                 "order_by": "Score",
                 "roi": [
@@ -781,45 +782,6 @@
     },
     "ProduceOptionsFlag": {
         "recognition": {
-            "type": "And",
-            "param": {
-                "all_of": [
-                    {
-                        "type": "NeuralNetworkDetect",
-                        "param": {
-                            "roi": [
-                              0,
-                              640,
-                              736,
-                              320
-                            ],
-                            "model": "choose.onnx",
-                            "labels": [
-                              "choose",
-                              "lesson"
-                            ],
-                            "expected": [
-                              0,
-                              1
-                            ]
-                        }
-                    },
-                    {
-                        "type": "TemplateMatch",
-                        "param": {
-                            "template": "produce/criteria_title.png",
-                            "roi": [
-                              500,
-                              0,
-                              220,
-                              165
-                            ]
-                        }
-                    }
-                ]
-            }
-        },
-        "action": {
             "type": "Custom",
             "param": {
                 "custom_recognition": "ProduceOptionsFlagAuto"
