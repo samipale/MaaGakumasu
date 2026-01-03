@@ -14,11 +14,11 @@ import numpy as np
 from PIL import Image
 from datetime import datetime
 
-def save_train_data(image):
+def save_train_data(image, datatype, datainfo):
     current_time = datetime.now()
     save_path = r'D:\scripts\MFAAvalonia-v2.4.0-win-x64\debug\train'
     timestamp = current_time.strftime("%Y%m%d_%H%M%S_%f")[:-3]  # %f是微秒，取前3位得到毫秒
-    file_base = f"options-{timestamp}.png"
+    file_base = f"{datatype}-{datainfo}-{timestamp}.png"
     filename = os.path.join(save_path, file_base)
     height, width, _ = image.shape
     rgb_array = image[:, :, ::-1]
@@ -202,19 +202,25 @@ class ProduceOptionsFlagAuto(CustomRecognition):
         context.run_task("Click_1")
         # 分两段判断，减轻ProduceEntry节点压力
         options_reco_detail = context.run_recognition("ProduceRecognitionOptions", argv.image)
-        if not options_reco_detail.hit:
-            return CustomRecognition.AnalyzeResult(box=None, detail={"detail": "未识别到选择冲刺/上课/外出场景"})
+        if (not options_reco_detail.hit or
+                not context.run_recognition("ProduceRecognitionWeekEvent", argv.image).hit or
+                options_reco_detail.best_result.box[2] < 490):
+            return CustomRecognition.AnalyzeResult(box=None, detail={"detail": "未识别到选择场景"})
+        match_score = options_reco_detail.best_result.score
+        match_score = f"{match_score:.3f}"
+        match_box = options_reco_detail.best_result.box
+        match_box = f"{match_box[0]},{match_box[1]},{match_box[2]},{match_box[3]}"
         if context.run_recognition("ProduceRecognitionPushEvent", argv.image).hit:
             event = "Push"
         elif context.run_recognition("ProduceRecognitionLessonEvent", argv.image).hit:
             event = "Lesson"
         elif context.run_recognition("ProduceRecognitionGoOutEvent", argv.image).hit:
             event = "GoOut"
-        elif context.run_recognition("ProduceRecognitionWeekEvent", argv.image).hit:
+        else:
             # 以下为开发功能，不要上传至github
-            save_train_data(argv.image)
+            save_train_data(argv.image, "options", f"{match_score}({match_box})")
             # 以上为开发功能，不要上传至github
-            logger.success("事件: 开局回忆会话")
+            logger.success("事件: 开局会话选择")
             result = options_reco_detail.best_result.box
             context.tasker.controller.post_click(result[0] + int(result[2] / 2),
                                                  result[1] + int(result[3] / 2)).wait()
@@ -222,8 +228,6 @@ class ProduceOptionsFlagAuto(CustomRecognition):
             context.tasker.controller.post_click(result[0] + int(result[2] / 2),
                                                  result[1] + int(result[3] / 2)).wait()
             return CustomRecognition.AnalyzeResult(box=None, detail={"detail": "会话场景"})
-        else:
-            return CustomRecognition.AnalyzeResult(box=None, detail={"detail": "未识别到会话场景"})
 
         # 成功进入场景，重新截图
         if event == "Push":
@@ -274,7 +278,7 @@ class ProduceOptionsFlagAuto(CustomRecognition):
             # 输出冲刺选项
             if reco_detail.hit:
                 # 以下为开发功能，不要上传至github
-                save_train_data(argv.image)
+                save_train_data(argv.image, "options", f"{match_score}({match_box})")
                 # 以上为开发功能，不要上传至github
                 result = reco_detail.best_result.box
                 context.tasker.controller.post_click(result[0] + int(result[2] / 2),
@@ -301,7 +305,7 @@ class ProduceOptionsFlagAuto(CustomRecognition):
             )
             if reco_detail.hit:
                 # 以下为开发功能，不要上传至github
-                save_train_data(argv.image)
+                save_train_data(argv.image,"options",f"{match_score}({match_box})")
                 # 以上为开发功能，不要上传至github
                 logger.success("选择消耗4体力的选项")
                 result = reco_detail.best_result.box
@@ -324,7 +328,7 @@ class ProduceOptionsFlagAuto(CustomRecognition):
             )
             if reco_detail.hit:
                 # 以下为开发功能，不要上传至github
-                save_train_data(argv.image)
+                save_train_data(argv.image,"options",f"{match_score}({match_box})")
                 # 以上为开发功能，不要上传至github
                 logger.success("普通课程（出牌模式），随机选择")
                 result = reco_detail.best_result.box
@@ -396,12 +400,12 @@ class ProduceOptionsFlagAuto(CustomRecognition):
             # 输出外出选项
             if result:
                 # 以下为开发功能，不要上传至github
-                save_train_data(argv.image)
+                save_train_data(argv.image,"options",f"{match_score}({match_box})")
                 # 以上为开发功能，不要上传至github
                 context.tasker.controller.post_click(result[0], result[1]).wait()
                 time.sleep(0.2)
                 context.tasker.controller.post_click(result[0], result[1]).wait()
-                logger.success(go_out_log)
+                logger.info(go_out_log)
                 return CustomRecognition.AnalyzeResult(box=result, detail={"detail": "识别到外出选项"})
             else:
                 logger.warning("未识别到外出选项")

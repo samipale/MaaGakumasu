@@ -12,7 +12,6 @@ __all__ = [
     "ProduceCardsAuto",
     "ProduceShoppingAuto",
     "ProduceStrengthenAuto",
-    "ProduceOptionsFlagAuto",
     "InitCounter",
     "UseCounter"
 ]

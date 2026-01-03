@@ -425,9 +425,9 @@
           "produce/criteria_title.png"
         ],
         "roi": [
+          500,
           0,
-          0,
-          230,
+          220,
           165
         ]
       }
