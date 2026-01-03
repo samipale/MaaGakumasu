@@ -317,8 +317,8 @@
         "roi": [
           0,
           640,
-          720,
-          312
+          736,
+          320
         ],
         "model": "choose.onnx",
         "labels": [
@@ -417,12 +417,12 @@
       "param": {}
     }
   },
-  "ProduceRecognitionWeek5Event": {
+  "ProduceRecognitionWeekEvent": {
     "recognition": {
       "type": "TemplateMatch",
       "param": {
         "template": [
-          "produce/week_5.png"
+          "produce/criteria_title.png"
         ],
         "roi": [
           0,

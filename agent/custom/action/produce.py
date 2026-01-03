@@ -15,11 +15,11 @@ import numpy as np
 from PIL import Image
 from datetime import datetime
 
-def save_train_data(image, datatype):
+def save_train_data(image, datatype, datainfo):
     current_time = datetime.now()
     save_path = r'D:\scripts\MFAAvalonia-v2.2.7-win-x64\debug\train'
     timestamp = current_time.strftime("%Y%m%d_%H%M%S_%f")[:-3]  # %f是微秒，取前3位得到毫秒
-    file_base = f"cards-{datatype}-{timestamp}.png"
+    file_base = f"{datatype}-{datainfo}-{timestamp}.png"
     filename = os.path.join(save_path, file_base)
     height, width, _ = image.shape
     rgb_array = image[:, :, ::-1]
@@ -512,7 +512,7 @@ class ProduceCardsAuto(CustomAction):
                 # 处理移动卡片界面
                 # 以下为开发功能，不要上传至github
                 image = context.tasker.controller.post_screencap().wait().get()
-                save_train_data(image, 'movecard')
+                save_train_data(image, "cards",'movecard')
                 # 以上为开发功能，不要上传至github
                 self._handle_move_cards(context)
                 time.sleep(5)
@@ -521,9 +521,9 @@ class ProduceCardsAuto(CustomAction):
             reco_detail = context.run_recognition("ProduceRecognitionCards", image)
             if reco_detail and reco_detail.hit:
                 # 以下为开发功能，不要上传至github
-                if random.random() <= 0.02:
+                if random.random() <= 0.01:
                     image = context.tasker.controller.post_screencap().wait().get()
-                    save_train_data(image, 'random')
+                    save_train_data(image, 'cards','random')
                 # 以上为开发功能，不要上传至github
                 results = reco_detail.all_results
 
@@ -559,7 +559,7 @@ class ProduceCardsAuto(CustomAction):
                     logger.warning("!!!!!!!!无可用牌!!!!!!!!!!!")
                     # 以下为开发功能，不要上传至github
                     image = context.tasker.controller.post_screencap().wait().get()
-                    save_train_data(image, 'out')
+                    save_train_data(image, 'cards','out')
                     # 以上为开发功能，不要上传至github
                     context.run_task("ProduceRecognitionSkipRound")
                     time.sleep(5)
@@ -580,16 +580,16 @@ class ProduceCardsAuto(CustomAction):
                         logger.warning("检测超时")
                         # 以下为开发功能，不要上传至github
                         image = context.tasker.controller.post_screencap().wait().get()
-                        save_train_data(image, 'hard')
+                        save_train_data(image, 'cards','hard')
                         time.sleep(0.2)
                         image = context.tasker.controller.post_screencap().wait().get()
-                        save_train_data(image, 'hard')
+                        save_train_data(image, 'cards','hard')
                         time.sleep(0.2)
                         image = context.tasker.controller.post_screencap().wait().get()
-                        save_train_data(image, 'hard')
+                        save_train_data(image, 'cards','hard')
                         time.sleep(0.2)
                         image = context.tasker.controller.post_screencap().wait().get()
-                        save_train_data(image, 'hard')
+                        save_train_data(image, 'cards','hard')
                         # 以上为开发功能，不要上传至github
                         context.tasker.controller.post_click(best_box[0], best_box[1]).wait()
                         time.sleep(0.3)
@@ -655,7 +655,7 @@ class ProduceCardsAuto(CustomAction):
         # 以下为开发功能，不要上传至github
         if y >= 1100:
             image = context.tasker.controller.post_screencap().wait().get()
-            save_train_data(image, 'movecarderror')
+            save_train_data(image, 'cards','movecarderror')
             info.error("处理移动卡片界面失败")
             context.tasker.post_stop()
         # 以上为开发功能，不要上传至github

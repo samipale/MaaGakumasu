@@ -210,7 +210,7 @@ class ProduceOptionsFlagAuto(CustomRecognition):
             event = "Lesson"
         elif context.run_recognition("ProduceRecognitionGoOutEvent", argv.image).hit:
             event = "GoOut"
-        elif context.run_recognition("ProduceRecognitionWeek5Event", argv.image).hit:
+        elif context.run_recognition("ProduceRecognitionWeekEvent", argv.image).hit:
             # 以下为开发功能，不要上传至github
             save_train_data(argv.image)
             # 以上为开发功能，不要上传至github
@@ -228,7 +228,7 @@ class ProduceOptionsFlagAuto(CustomRecognition):
         # 成功进入场景，重新截图
         if event == "Push":
             logger.success("事件: 冲刺")
-            time.sleep(2)
+            time.sleep(3)
             image = context.tasker.controller.post_screencap().wait().get()
         else:
             image = argv.image
