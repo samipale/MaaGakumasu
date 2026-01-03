@@ -7,7 +7,6 @@ from maa.context import Context
 from maa.agent.agent_server import AgentServer
 from maa.custom_recognition import CustomRecognition
 
-
 @AgentServer.custom_recognition("ProduceShowStart")
 class ProduceShowStart(CustomRecognition):
     """
@@ -143,41 +142,10 @@ class ProduceCardsFlagAuto(CustomRecognition):
 
         context.run_task("Click_1")
         cards_reco_detail = context.run_recognition("ProduceRecognitionCards", argv.image)
-        health_reco_detail = context.run_recognition("ProduceRecognitionHealthFlag", argv.image)
-        if cards_reco_detail and cards_reco_detail.hit and health_reco_detail and health_reco_detail.hit:
+        move_cards_reco_detail = context.run_recognition("ProduceRecognitionMoveCards", argv.image)
+        # 通过识别卡牌与生命值判断是否进入出牌场景，将hp判断放进if后面减少ProduceEntry节点压力
+        if cards_reco_detail.hit and context.run_recognition("ProduceRecognitionHealthFlag", argv.image).hit:
             logger.success("事件: 出牌场景")
             return CustomRecognition.AnalyzeResult(box=[0, 0, 0, 0], detail={"detail": "识别到出牌场景"})
         else:
             return CustomRecognition.AnalyzeResult(box=None, detail={"detail": "未识别到选择场景"})
-
-
-@AgentServer.custom_recognition("ProduceOptionsFlagAuto")
-class ProduceOptionsFlagAuto(CustomRecognition):
-    """
-        自动识别选择冲刺/上课场景
-    """
-
-    def analyze(
-            self,
-            context: Context,
-            argv: CustomRecognition.AnalyzeArg,
-    ) -> Union[CustomRecognition.AnalyzeResult, Optional[RectType]]:
-        context.run_task("Click_1")
-        options_reco_detail = context.run_recognition("ProduceRecognitionOptions", argv.image)
-        health_reco_detail = context.run_recognition("ProduceRecognitionOptionsEvents", argv.image)
-        if not (options_reco_detail and options_reco_detail.hit) or not (health_reco_detail and health_reco_detail.hit):
-            return CustomRecognition.AnalyzeResult(box=None, detail={"detail": "未识别到选择场景"})
-
-        logger.success("事件: 选择冲刺/上课")
-        results = options_reco_detail.all_results
-        label_counts = Counter()
-        best_box = options_reco_detail.best_result.box
-        for result in results:
-            label_counts[result.label] += 1
-        choose = label_counts["choose"]
-        lesson = label_counts["lesson"]
-        logger.info(f"选项数量:{choose}/{lesson}")
-        if lesson == 0:
-            pass
-        context.tasker.controller.post_click(best_box[0], best_box[1]).wait()
-        return CustomRecognition.AnalyzeResult(box=best_box, detail={"detail": "选择加最佳选项"})

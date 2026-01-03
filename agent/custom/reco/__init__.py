@@ -12,7 +12,6 @@ __all__ = [
     "ProduceChooseCardsAuto",
     "ProduceChooseDrinkAuto",
     "ProduceCardsFlagAuto",
-    "ProduceOptionsFlagAuto",
     "ProduceChooseItemAuto",
     "ScreenRotateCheck"
 ]
