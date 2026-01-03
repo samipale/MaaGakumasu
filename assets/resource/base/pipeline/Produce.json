@@ -300,9 +300,9 @@
             "[JumpBack]ProduceChooseItemFlag",
             "[JumpBack]ProduceChooseStrengthenFlag",
             "[JumpBack]ProduceChooseEventFlag",
-            "[JumpBack]ProduceOptionsFlag",
             "[JumpBack]ProduceShoppingFlag",
             "[JumpBack]ProduceKeepDrinkFlag",
+            "[JumpBack]ProduceOptionsFlag",
             "ProduceFailedFlag",
             "[JumpBack]ProduceButton",
             "[JumpBack]Click_1"
