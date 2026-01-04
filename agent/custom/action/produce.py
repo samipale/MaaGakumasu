@@ -650,7 +650,7 @@ class ProduceCardsAuto(CustomAction):
             reco_detail = context.run_recognition('ProduceRecognitionChooseMoveCards', image)
             if not reco_detail.hit:
                 context.tasker.controller.post_click(360, 1160).wait()
-                break
+                return True
             else:
                 y = y + 100
         # 以下为开发功能，不要上传至github
@@ -659,9 +659,8 @@ class ProduceCardsAuto(CustomAction):
             save_train_data(image, 'cards','movecarderror')
             info.error("处理移动卡片界面失败")
             context.tasker.post_stop()
-            return False
         # 以上为开发功能，不要上传至github
-        return True
+        return False
 
 
 @AgentServer.custom_action("ProduceShoppingAuto")
