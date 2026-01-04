@@ -17,7 +17,7 @@ from datetime import datetime
 
 def save_train_data(image, datatype, datainfo):
     current_time = datetime.now()
-    save_path = r'D:\scripts\MFAAvalonia-v2.4.0-win-x64\debug\train'
+    save_path = r'D:\scripts\maagakumasu_debug\train'
     timestamp = current_time.strftime("%Y%m%d_%H%M%S_%f")[:-3]  # %f是微秒，取前3位得到毫秒
     file_base = f"{datatype}-{datainfo}-{timestamp}.png"
     filename = os.path.join(save_path, file_base)
