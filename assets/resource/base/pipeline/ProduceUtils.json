@@ -417,7 +417,7 @@
       "param": {}
     }
   },
-  "ProduceRecognitionWeekEvent": {
+  "ProduceRecognitionParameterFlag": {
     "recognition": {
       "type": "TemplateMatch",
       "param": {

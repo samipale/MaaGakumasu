@@ -98,7 +98,7 @@ class ProduceChooseCardsAuto(CustomRecognition):
             }})
 
         logger.success("事件: 选择卡牌")
-        if reco_detail_recommend.hit:
+        if reco_detail_recommend and reco_detail_recommend.hit:
             logger.info("选择建议卡")
             result = reco_detail_recommend.best_result.box
             result[1] = result[1] - 80
@@ -202,8 +202,8 @@ class ProduceOptionsFlagAuto(CustomRecognition):
         context.run_task("Click_1")
         # 分两段判断，减轻ProduceEntry节点压力
         options_reco_detail = context.run_recognition("ProduceRecognitionOptions", argv.image)
-        if (not options_reco_detail.hit or
-                not context.run_recognition("ProduceRecognitionWeekEvent", argv.image).hit or
+        if (not options_reco_detail and not options_reco_detail.hit or
+                not context.run_recognition("ProduceRecognitionParameterFlag", argv.image).hit or
                 options_reco_detail.best_result.box[2] < 490):
             return CustomRecognition.AnalyzeResult(box=None, detail={"detail": "未识别到选择场景"})
         match_score = options_reco_detail.best_result.score
@@ -222,11 +222,11 @@ class ProduceOptionsFlagAuto(CustomRecognition):
             # 以上为开发功能，不要上传至github
             logger.success("事件: 开局会话选择")
             result = options_reco_detail.best_result.box
-            context.tasker.controller.post_click(result[0] + int(result[2] / 2),
-                                                 result[1] + int(result[3] / 2)).wait()
+            context.tasker.controller.post_click(result[0] + result[2] // 2,
+                                                 result[1] + result[3] // 2).wait()
             time.sleep(0.2)
-            context.tasker.controller.post_click(result[0] + int(result[2] / 2),
-                                                 result[1] + int(result[3] / 2)).wait()
+            context.tasker.controller.post_click(result[0] + result[2] // 2,
+                                                 result[1] + result[3] // 2).wait()
             return CustomRecognition.AnalyzeResult(box=None, detail={"detail": "会话场景"})
 
         # 成功进入场景，重新截图
