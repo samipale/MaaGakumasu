@@ -488,7 +488,7 @@
       }
     },
     "action": {
-      "type": "Click",
+      "type": "DoNothing",
       "param": {}
     }
   },
