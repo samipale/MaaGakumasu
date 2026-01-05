@@ -507,12 +507,11 @@ class ProduceCardsAuto(CustomAction):
 
         start_time = time.time()
         while True:
-
-            # 识别手牌
             image = context.tasker.controller.post_screencap().wait().get()
+
+            # 处理移动卡片界面
             reco_detail = context.run_recognition('ProduceRecognitionMoveCards', image)
             if reco_detail.hit:
-                # 处理移动卡片界面
                 # 以下为开发功能，不要上传至github
                 image = context.tasker.controller.post_screencap().wait().get()
                 save_train_data(image, "cards",'movecard')
@@ -521,6 +520,13 @@ class ProduceCardsAuto(CustomAction):
                     time.sleep(self.ACTION_DELAY)
                     start_time = time.time()
                     continue
+
+            # 使用饮料
+            reco_detail = context.run_recognition('ProduceCheckDrinkButton')
+            for _ in range(reco_detail.hit, 3):
+                context.run_task('ProduceUseDrink')
+
+            # 识别手牌
             reco_detail = context.run_recognition("ProduceRecognitionCards", image)
             if reco_detail and reco_detail.hit:
                 # 以下为开发功能，不要上传至github
@@ -601,17 +607,11 @@ class ProduceCardsAuto(CustomAction):
                         start_time = time.time()
 
             else:
-                # 处理误触
-                context.run_task("ProducePlayingCardsCloseButton",
-                                 pipeline_override = {"ProducePlayingCardsCloseButton":{
-                                     "recognition": "TemplateMatch",
-                                     "template": ["cancel.png", "close_icon.png",
-                                                  "challenge_award.png", "close_menu.png"],
-                                     "roi": [0, 1000, 720, 280],
-                                     "action": "Click",
-                                     "post_delay": 500,
-                                     "timeout": 3000
-                                 }})
+                # 处理意外打开的界面
+                reco_detail = context.run_recognition("ProducePlayingCardsCloseButton", image)
+                if reco_detail and reco_detail.hit:
+                    best_box = reco_detail.box
+                    context.tasker.controller.post_click(best_box[0], best_box[1]).wait()
 
                 reco_detail = context.run_recognition("ProduceRecognitionHealthFlag", image)
                 if not (reco_detail and reco_detail.hit):
