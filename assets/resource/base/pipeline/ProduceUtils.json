@@ -432,7 +432,8 @@
           0,
           220,
           165
-        ]
+        ],
+        "threshold": 0.9
       }
     },
     "action": {
@@ -475,7 +476,7 @@
   },
   "ProduceCheckDrinkButton": {
     "recognition": {
-      "type": "TemplateMatch",
+      "type": "FeatureMatch",
       "param": {
         "template": "produce/empty_drink.png",
         "roi": [
@@ -509,7 +510,9 @@
     },
     "next": [
       "ProduceUseDrinkConfirm"
-    ]
+    ],
+    "post_delay": 1000,
+    "timeout": 3000
   },
   "ProduceUseDrinkConfirm": {
     "recognition": {
@@ -528,7 +531,7 @@
       "type": "Click",
       "param": {}
     },
-    "post_delay": 3000
+    "post_delay": 5000
   },
   "ProducePlayingCardsCloseButton": {
     "recognition": {
