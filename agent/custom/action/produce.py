@@ -514,6 +514,15 @@ class ProduceCardsAuto(CustomAction):
         logger.info(f"识别到{3-hit_count}瓶饮料")
         for _ in range(hit_count, 3):
             context.run_task('ProduceUseDrink')
+            # 处理移动卡片界面
+            reco_detail = context.run_recognition('ProduceRecognitionMoveCards', image)
+            if reco_detail.hit:
+                # 以下为开发功能，不要上传至github
+                image = context.tasker.controller.post_screencap().wait().get()
+                save_train_data(image, "cards",'movecard')
+                # 以上为开发功能，不要上传至github
+                if self._handle_move_cards(context):
+                    time.sleep(3)
 
         start_time = time.time()
         while True:
