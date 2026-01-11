@@ -544,9 +544,10 @@ class ProduceCardsAuto(CustomAction):
             reco_detail = context.run_recognition("ProduceRecognitionCards", image)
             if reco_detail and reco_detail.hit:
                 # 以下为开发功能，不要上传至github
+                hits = reco_detail.hit
                 if random.random() <= 0.01:
                     image = context.tasker.controller.post_screencap().wait().get()
-                    save_train_data(image, 'cards','random')
+                    save_train_data(image, 'cards',f'random-{hits}cards-')
                 # 以上为开发功能，不要上传至github
                 results = reco_detail.all_results
 
@@ -582,7 +583,7 @@ class ProduceCardsAuto(CustomAction):
                     logger.warning("!!!!!!!!无可用牌!!!!!!!!!!!")
                     # 以下为开发功能，不要上传至github
                     image = context.tasker.controller.post_screencap().wait().get()
-                    save_train_data(image, 'cards','out')
+                    save_train_data(image, 'cards',f'out-{hits}cards-{suggestions}/{cards}/{useless}-')
                     # 以上为开发功能，不要上传至github
                     context.run_task("ProduceRecognitionSkipRound")
                     time.sleep(self.ACTION_DELAY)
@@ -603,16 +604,16 @@ class ProduceCardsAuto(CustomAction):
                         logger.warning("检测超时")
                         # 以下为开发功能，不要上传至github
                         image = context.tasker.controller.post_screencap().wait().get()
-                        save_train_data(image, 'cards','hard')
+                        save_train_data(image, 'cards',f'hard-{hits}cards-{suggestions}/{cards}/{useless}-')
                         time.sleep(0.2)
                         image = context.tasker.controller.post_screencap().wait().get()
-                        save_train_data(image, 'cards','hard')
+                        save_train_data(image, 'cards',f'hard-{hits}cards-{suggestions}/{cards}/{useless}-')
                         time.sleep(0.2)
                         image = context.tasker.controller.post_screencap().wait().get()
-                        save_train_data(image, 'cards','hard')
+                        save_train_data(image, 'cards',f'hard-{hits}cards-{suggestions}/{cards}/{useless}-')
                         time.sleep(0.2)
                         image = context.tasker.controller.post_screencap().wait().get()
-                        save_train_data(image, 'cards','hard')
+                        save_train_data(image, 'cards',f'hard-{hits}cards-{suggestions}/{cards}/{useless}-')
                         # 以上为开发功能，不要上传至github
                         context.tasker.controller.post_click(best_box[0], best_box[1]).wait()
                         time.sleep(self.CLICK_DELAY)
