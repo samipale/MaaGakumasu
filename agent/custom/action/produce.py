@@ -636,7 +636,7 @@ class ProduceCardsAuto(CustomAction):
 
     def _play_a_card(self, context: Context, box: list) -> float:
         """
-            出牌并处于移动卡牌界面
+            出牌并处理移动卡牌界面
 
             Args:
                 context: maa的Context类
@@ -704,8 +704,6 @@ class ProduceCardsAuto(CustomAction):
                     return True
                 else:
                     y = y + 100
-        else:
-            logger.info("未检测到移动卡牌界面")
         return False
 
     @staticmethod
