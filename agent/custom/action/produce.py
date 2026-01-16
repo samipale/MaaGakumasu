@@ -498,7 +498,6 @@ class ProduceCardsAuto(CustomAction):
     # 阈值常量
     CLICK_DELAY = 0.3
     ACTION_DELAY = 8.0
-    start_time = time.time()
 
     def run(
             self,
@@ -634,7 +633,7 @@ class ProduceCardsAuto(CustomAction):
 
         return True
 
-    def _play_a_card(self, context: Context, box: list) -> float:
+    def _play_a_card(self, context: Context, box: list) -> bool:
         """
             出牌并处理移动卡牌界面
 
@@ -704,6 +703,8 @@ class ProduceCardsAuto(CustomAction):
                     return True
                 else:
                     y = y + 100
+                if context.tasker.stopping:
+                    return False
         return False
 
     @staticmethod
@@ -719,10 +720,10 @@ class ProduceCardsAuto(CustomAction):
                 否则返回False。
         """
         image = context.tasker.controller.post_screencap().wait().get()
-        reco_detail = context.run_recognition('ProduceRecognitionChooseMoveCards', image)
+        reco_detail = context.run_recognition("ProduceRecognitionHealthFlag", image)
         if reco_detail and reco_detail.hit:
             return True
-        reco_detail = context.run_recognition("ProduceRecognitionHealthFlag", image)
+        reco_detail = context.run_recognition('ProduceRecognitionChooseMoveCards', image)
         if reco_detail and reco_detail.hit:
             return True
         return False
