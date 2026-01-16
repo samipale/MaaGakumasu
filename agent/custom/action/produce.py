@@ -567,7 +567,7 @@ class ProduceCardsAuto(CustomAction):
                     self._play_a_card(context, suggestions_box)
                 elif useless > 0 and suggestions == 0 and cards == 0:
                     # 需要先判断是否处于出牌场景，避免误识别。然后才能确认是否真的无可用牌。
-                    if _is_playing_card() is False:
+                    if self._is_playing_card(context) is False:
                         logger.info("未检测到可用卡片和体力")
                         logger.success("事件: 退出出牌")
                         break
@@ -586,7 +586,7 @@ class ProduceCardsAuto(CustomAction):
                         continue
 
                     # 先判断是否处于出牌场景，避免误识别
-                    if _is_playing_card() is False:
+                    if self._is_playing_card(context) is False:
                         logger.info("未检测到卡片和体力")
                         logger.success("事件: 退出出牌")
                         break
