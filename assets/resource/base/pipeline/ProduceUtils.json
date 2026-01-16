@@ -533,7 +533,7 @@
     },
     "post_delay": 5000
   },
-  "ProducePlayingCardsCloseButton": {
+  "ProducePlayingCardCloseButton": {
     "recognition": {
       "type": "TemplateMatch",
       "param": {

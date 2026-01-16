@@ -491,13 +491,14 @@ class ProduceChooseEventAuto(CustomAction):
 class ProduceCardsAuto(CustomAction):
     """
         自动识别根据系统提示出牌
-        15秒未检测到提示牌，则打出最高分的牌
+        10秒未检测到提示牌，则打出最高分的牌
         识别不到体力退出函数
         处理是否打出该牌的弹窗
     """
     # 阈值常量
     CLICK_DELAY = 0.3
-    ACTION_DELAY = 5.0
+    ACTION_DELAY = 8.0
+    start_time = time.time()
 
     def run(
             self,
@@ -515,29 +516,19 @@ class ProduceCardsAuto(CustomAction):
         for _ in range(hit_count, 3):
             context.run_task('ProduceUseDrink')
             # 处理移动卡片界面
-            reco_detail = context.run_recognition('ProduceRecognitionMoveCards', image)
-            if reco_detail.hit:
-                # 以下为开发功能，不要上传至github
-                image = context.tasker.controller.post_screencap().wait().get()
-                save_train_data(image, "cards",'movecard')
-                # 以上为开发功能，不要上传至github
-                if self._handle_move_cards(context):
-                    time.sleep(3)
+            if self._handle_move_cards(context):
+                time.sleep(3)
 
-        start_time = time.time()
+        self.start_time = time.time()
         while True:
+            # 截图
             image = context.tasker.controller.post_screencap().wait().get()
 
             # 处理移动卡片界面
-            reco_detail = context.run_recognition('ProduceRecognitionMoveCards', image)
-            if reco_detail.hit:
-                # 以下为开发功能，不要上传至github
-                save_train_data(image, "cards",'movecard')
-                # 以上为开发功能，不要上传至github
-                if self._handle_move_cards(context):
-                    time.sleep(self.ACTION_DELAY)
-                    start_time = time.time()
-                    continue
+            if self._handle_move_cards(context, image):
+                time.sleep(self.ACTION_DELAY)
+                self.start_time = time.time()
+                continue
 
             # 识别手牌
             reco_detail = context.run_recognition("ProduceRecognitionCards", image)
@@ -547,17 +538,19 @@ class ProduceCardsAuto(CustomAction):
                 if random.random() <= 0.01:
                     save_train_data(image, 'cards',f'random-{hits}hit-')
                 # 以上为开发功能，不要上传至github
+                # 目前模型识别的准确度不够高，暂时使用all_results
                 results = reco_detail.all_results
 
                 label_counts = Counter()
-                suggestions_box = [0, 0]
-                best_box = [0, 0]
+                suggestions_box = [0, 0, 0, 0]
+                best_box = [0, 0, 0, 0]
                 best_score = 0
                 for result in results:
                     label_counts[result.label] += 1
                     if result.label == "suggestions":
                         suggestions_box = result.box
                     if result.label == "cards":
+                        # 选出识别分数最高分的卡牌，避免错误
                         if result.score > best_score:
                             best_score = result.score
                             best_box = result.box
@@ -570,34 +563,35 @@ class ProduceCardsAuto(CustomAction):
 
                     if suggestions_box[1] < 840 or suggestions_box[1] > 1150:
                         continue
-                    context.tasker.controller.post_click(suggestions_box[0] + 100, suggestions_box[1] + 140).wait()
-                    time.sleep(self.CLICK_DELAY)
-                    context.tasker.controller.post_click(suggestions_box[0] + 100, suggestions_box[1] + 140).wait()
-                    end_time = time.time()
-                    logger.info("出牌 耗时:{:.2f}秒".format(end_time - start_time))
-                    time.sleep(self.ACTION_DELAY)
-                    start_time = time.time()
+                    # 出牌
+                    self._play_a_card(context, suggestions_box)
                 elif useless > 0 and suggestions == 0 and cards == 0:
+                    # 需要先判断是否处于出牌场景，避免误识别。然后才能确认是否真的无可用牌。
+                    if _is_playing_card() is False:
+                        logger.info("未检测到可用卡片和体力")
+                        logger.success("事件: 退出出牌")
+                        break
+                    # 确认处于出牌场景，且无可用牌
                     logger.warning("!!!!!!!!无可用牌!!!!!!!!!!!")
                     # 以下为开发功能，不要上传至github
                     save_train_data(image, 'cards',f'out-{hits}hit-{suggestions},{cards},{useless}-')
                     # 以上为开发功能，不要上传至github
                     context.run_task("ProduceRecognitionSkipRound")
                     time.sleep(self.ACTION_DELAY)
-                    start_time = time.time()
+                    self.start_time = time.time()
 
                 end_time = time.time()
-                if end_time - start_time > 15:
+                if end_time - self.start_time > 10:
                     if best_box[1] < 840 or best_box[1] > 1150:
                         continue
 
-                    reco_detail = context.run_recognition("ProduceRecognitionHealthFlag", image)
-                    if not reco_detail.hit:
-                        # 应对极其稀有的但是遇到过一次的把考试结果识别成卡片的情况
+                    # 先判断是否处于出牌场景，避免误识别
+                    if _is_playing_card() is False:
                         logger.info("未检测到卡片和体力")
                         logger.success("事件: 退出出牌")
                         break
                     else:
+                        # 确认处于出牌场景且卡牌识别超时
                         logger.warning("检测超时")
                         # 以下为开发功能，不要上传至github
                         image = context.tasker.controller.post_screencap().wait().get()
@@ -612,15 +606,11 @@ class ProduceCardsAuto(CustomAction):
                         image = context.tasker.controller.post_screencap().wait().get()
                         save_train_data(image, 'cards',f'hard-{hits}hit-{suggestions},{cards},{useless}-')
                         # 以上为开发功能，不要上传至github
-                        context.tasker.controller.post_click(best_box[0], best_box[1]).wait()
-                        time.sleep(self.CLICK_DELAY)
-                        context.tasker.controller.post_click(best_box[0], best_box[1]).wait()
-                        time.sleep(self.ACTION_DELAY)
-                        start_time = time.time()
+                        self._play_a_card(context, best_box)
 
             else:
                 # 处理意外打开的界面
-                reco_detail = context.run_recognition("ProducePlayingCardsCloseButton", image)
+                reco_detail = context.run_recognition("ProducePlayingCardCloseButton", image)
                 if reco_detail and reco_detail.hit:
                     best_box = reco_detail.box
                     context.tasker.controller.post_click(best_box[0], best_box[1]).wait()
@@ -644,34 +634,99 @@ class ProduceCardsAuto(CustomAction):
 
         return True
 
+    def _play_a_card(self, context: Context, box: list) -> float:
+        """
+            出牌并处于移动卡牌界面
+
+            Args:
+                context: maa的Context类
+                box: 点击范围，格式为[x, y, w, h]（x、y为点击范围左上角的坐标）
+
+            Returns:
+                如果执行没有问题，返回True；
+                否则返回False
+        """
+
+        # 出牌
+        # context.tasker.controller.post_click(box[0] + 100, box[1] + 140).wait()
+        context.tasker.controller.post_click(box[0] + box[2] // 2, box[1] + box[3] // 2).wait()
+        time.sleep(self.CLICK_DELAY)
+        context.tasker.controller.post_click(box[0] + box[2] // 2, box[1] + box[3] // 2).wait()
+        logger.info("出牌 耗时:{:.2f}秒".format(time.time() - self.start_time))
+
+        # 等待移动卡牌界面
+        sleep_time = 1
+        time.sleep(sleep_time)
+
+        # 处理移动卡牌界面
+        self._handle_move_cards(context)
+
+        # 等待出牌后动画并重置计时
+        time.sleep(max(0, self.ACTION_DELAY - sleep_time))
+        self.start_time = time.time()
+
+        return True
+
     @staticmethod
-    def _handle_move_cards(context: Context) -> bool:
+    def _handle_move_cards(context: Context, image=None) -> bool:
         """
             一种处理移动卡片界面的笨方法
             在识别小卡片模型出来前可能都只能这样处理
+
+            Args:
+                context: maa的Context类
+                image: 截图
+
+            Returns:
+                如果出现了移动卡牌界面并处理成功，返回True；
+                如果没有出现移动卡牌界面或处理过程出现问题，返回False。
         """
-        y = 450
-        while y < 1100:
-            # for x in [140, 285, 440, 585]:
-            for x in [140, 285]:
-                context.tasker.controller.post_click(x, y).wait()
-                time.sleep(0.2)
-                context.tasker.controller.post_click(x, y).wait()
-                time.sleep(0.2)
+        if image is None:
             image = context.tasker.controller.post_screencap().wait().get()
-            reco_detail = context.run_recognition('ProduceRecognitionChooseMoveCards', image)
-            if not reco_detail.hit:
-                context.tasker.controller.post_click(360, 1160).wait()
-                return True
-            else:
-                y = y + 100
-        # 以下为开发功能，不要上传至github
-        if y >= 1100:
-            image = context.tasker.controller.post_screencap().wait().get()
-            save_train_data(image, 'cards','movecarderror')
-            info.error("处理移动卡片界面失败")
-            context.tasker.post_stop()
-        # 以上为开发功能，不要上传至github
+
+        reco_detail = context.run_recognition('ProduceRecognitionChooseMoveCards', image)
+        if reco_detail.hit:
+            # 以下为开发功能，不要上传至github
+            save_train_data(image, "cards", 'movecard')
+            # 以上为开发功能，不要上传至github
+            y = 450
+            while y < 1100:
+                # for x in [140, 285, 440, 585]:
+                for x in [140, 285]:
+                    context.tasker.controller.post_click(x, y).wait()
+                    time.sleep(0.2)
+                    context.tasker.controller.post_click(x, y).wait()
+                    time.sleep(0.2)
+                image = context.tasker.controller.post_screencap().wait().get()
+                reco_detail = context.run_recognition('ProduceRecognitionChooseMoveCards', image)
+                if not reco_detail.hit:
+                    context.tasker.controller.post_click(360, 1160).wait()
+                    return True
+                else:
+                    y = y + 100
+        else:
+            logger.info("未检测到移动卡牌界面")
+        return False
+
+    @staticmethod
+    def _is_playing_card(context: Context) -> bool:
+        """
+            判断是否处于出牌场景
+
+            Args:
+                context: maa的Context类
+
+            Returns:
+                如果处于出牌场景，返回True；
+                否则返回False。
+        """
+        image = context.tasker.controller.post_screencap().wait().get()
+        reco_detail = context.run_recognition('ProduceRecognitionChooseMoveCards', image)
+        if reco_detail and reco_detail.hit:
+            return True
+        reco_detail = context.run_recognition("ProduceRecognitionHealthFlag", image)
+        if reco_detail and reco_detail.hit:
+            return True
         return False
 
 
