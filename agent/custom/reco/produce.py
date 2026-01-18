@@ -253,14 +253,17 @@ class ProduceOptionsFlagAuto(CustomRecognition):
         context.run_task("Click_1")
         # 分两段判断，减轻ProduceEntry节点压力
         options_reco_detail = context.run_recognition("ProduceRecognitionOptions", argv.image)
-        if (not options_reco_detail or not options_reco_detail.hit or
-                not context.run_recognition("ProduceRecognitionParameterFlag", argv.image).hit or
-                options_reco_detail.best_result.box[2] < 490):
+        if not options_reco_detail or not options_reco_detail.hit:
             return CustomRecognition.AnalyzeResult(box=None, detail={"detail": "未识别到选择场景"})
         match_score = options_reco_detail.best_result.score
         match_score = f"{match_score:.3f}"
         match_box = options_reco_detail.best_result.box
         match_box = f"{match_box[0]},{match_box[1]},{match_box[2]},{match_box[3]}"
+        if float(match_score) < 0.75:
+            # 以下为开发功能，不要上传至github
+            save_train_data(argv.image, "options", f"lowscore-{match_score}({match_box})")
+            # 以上为开发功能，不要上传至github
+            return CustomRecognition.AnalyzeResult(box=None, detail={"detail": "未识别到选择场景"})
         if context.run_recognition("ProduceRecognitionPushEvent", argv.image).hit:
             event = "Push"
         elif context.run_recognition("ProduceRecognitionLessonEvent", argv.image).hit:

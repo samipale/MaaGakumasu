@@ -318,12 +318,6 @@
     "recognition": {
       "type": "NeuralNetworkDetect",
       "param": {
-        "roi": [
-          0,
-          640,
-          720,
-          312
-        ],
         "model": "choose.onnx",
         "labels": [
           "choose",
@@ -414,26 +408,6 @@
           165
         ],
         "threshold": 0.9
-      }
-    },
-    "action": {
-      "type": "DoNothing",
-      "param": {}
-    }
-  },
-  "ProduceRecognitionParameterFlag": {
-    "recognition": {
-      "type": "TemplateMatch",
-      "param": {
-        "template": [
-          "produce/criteria_title.png"
-        ],
-        "roi": [
-          500,
-          0,
-          220,
-          165
-        ]
       }
     },
     "action": {
