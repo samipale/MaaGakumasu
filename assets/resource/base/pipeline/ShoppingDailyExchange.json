@@ -488,6 +488,28 @@
     },
     "enabled": false
   },
+  "ShoppingDailyExchangeItemsMisuzuHataya": {
+    "recognition": {
+      "type": "DirectHit",
+      "param": {}
+    },
+    "action": {
+      "type": "DoNothing",
+      "param": {}
+    },
+    "enabled": false
+  },
+  "ShoppingDailyExchangeItemsSenaJuo": {
+    "recognition": {
+      "type": "DirectHit",
+      "param": {}
+    },
+    "action": {
+      "type": "DoNothing",
+      "param": {}
+    },
+    "enabled": false
+  },
   "ShoppingDailyExchangeAPSupportPointIncreased": {
     "recognition": {
       "type": "DirectHit",

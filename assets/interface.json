@@ -1,7 +1,7 @@
 {
   "interface_version": 2,
   "name": "MaaGakumasu",
-  "version": "v1.2.3",
+  "version": "v1.2.6",
   "mirrorchyan_rid": "MaaGakumasu",
   "mirrorchyan_multiplatform": true,
   "github": "https://github.com/SuperWaterGod/MaaGakumasu",
@@ -10,6 +10,7 @@
   "welcome": "欢迎使用基于全新架构的 学園アイドルマスター(学マス) 小助手。图像技术 + 模拟控制 + 深度学习，解放双手！由 MaaFramework 强力驱动！",
   "description": "学園アイドルマスター（学マス）小助手 | Assistant For Gakuen Idolmaster",
   "languages": {
+    "zh-CN": "lang/zh-CN.json",
     "zh-Hant": "lang/zh-Hant.json"
   },
   "controller": [
@@ -37,7 +38,7 @@
     "child_exec": "python",
     "child_args": [
       "-u",
-      "./agent/main.py"
+      "./../agent/main.py"
     ]
   },
   "task": [
@@ -63,7 +64,7 @@
         "直播活动工作时长"
       ],
       "default_check": true,
-      "doc": "自动:优先选择笑脸，其次按照好感高低选择",
+      "doc": "$安排工作说明",
       "label": "$安排工作"
     },
     {
@@ -75,7 +76,7 @@
         "请求物品种类"
       ],
       "default_check": true,
-      "doc": "自动选择物品将选择数量最少的物品",
+      "doc": "$社团活动说明",
       "label": "$社团活动"
     },
     {
@@ -85,10 +86,7 @@
         "挑战模式"
       ],
       "default_check": true,
-      "doc": [
-        "自动模式下，将选择分差最小的对手进行挑战",
-        "如果没有编队，将使用自动编队"
-      ],
+      "doc": "$每日挑战说明",
       "label": "$每日挑战"
     },
     {
@@ -102,10 +100,7 @@
         "购买活动扭蛋"
       ],
       "default_check": true,
-      "doc": [
-        "购买会将扭蛋全部用光",
-        "购买活动扭蛋仅在活动扭蛋上架期间有效"
-      ],
+      "doc": "$扭蛋兑换说明",
       "label": "$扭蛋兑换"
     },
     {
@@ -116,9 +111,7 @@
         "启用AP兑换"
       ],
       "default_check": true,
-      "doc": [
-        "默认仅购买推荐物品"
-      ],
+      "doc": "$每日兑换说明",
       "label": "$每日兑换"
     },
     {
@@ -144,12 +137,7 @@
         "跳过准备阶段"
       ],
       "default_check": true,
-      "doc": [
-        "## 注:测试阶段，存在卡住的BUG",
-        "目前仅支持 初 的`REGULAR/PRO/MASTER` 难度",
-        "当培育过程中出现异常时，可以返回主界面再次进入培育后，勾选 `跳过准备阶段`，再次运行本任务即可继续培育",
-        "平均半小时完成一次培育，培育完成后请及时清理`debug`目录下的log文件"
-      ],
+      "doc": "$培育说明",
       "label": "$开始培育"
     },
     {
@@ -166,6 +154,7 @@
       "cases": [
         {
           "name": "自动",
+          "label": "$自动",
           "pipeline_override": {
             "ChallengeChoose": {
               "custom_action_param": {
@@ -176,6 +165,7 @@
         },
         {
           "name": "最大值",
+          "label": "$最大值",
           "pipeline_override": {
             "ChallengeChoose": {
               "custom_action_param": {
@@ -186,6 +176,7 @@
         },
         {
           "name": "最小值",
+          "label": "$最小值",
           "pipeline_override": {
             "ChallengeChoose": {
               "custom_action_param": {
@@ -196,6 +187,7 @@
         },
         {
           "name": "随机",
+          "label": "$随机",
           "pipeline_override": {
             "ChallengeChoose": {
               "custom_action_param": {
@@ -206,6 +198,7 @@
         },
         {
           "name": "固定第一位",
+          "label": "$固定第一位",
           "pipeline_override": {
             "ChallengeChoose": {
               "custom_action_param": {
@@ -217,6 +210,7 @@
         },
         {
           "name": "固定第二位",
+          "label": "$固定第二位",
           "pipeline_override": {
             "ChallengeChoose": {
               "custom_action_param": {
@@ -228,6 +222,7 @@
         },
         {
           "name": "固定第三位",
+          "label": "$固定第三位",
           "pipeline_override": {
             "ChallengeChoose": {
               "custom_action_param": {
@@ -313,6 +308,7 @@
       "cases": [
         {
           "name": "自动",
+          "label": "$自动",
           "pipeline_override": {
             "WorkChooseShow": {
               "custom_recognition": "WorkChooseAuto"
@@ -321,6 +317,7 @@
         },
         {
           "name": "花海咲季",
+          "label": "$花海咲季",
           "pipeline_override": {
             "WorkChooseShow": {
               "custom_recognition": "WorkChooseIdol",
@@ -332,6 +329,7 @@
         },
         {
           "name": "月村手毬",
+          "label": "$月村手毬",
           "pipeline_override": {
             "WorkChooseShow": {
               "custom_recognition": "WorkChooseIdol",
@@ -343,6 +341,7 @@
         },
         {
           "name": "藤田琴音",
+          "label": "$藤田琴音",
           "pipeline_override": {
             "WorkChooseShow": {
               "custom_recognition": "WorkChooseIdol",
@@ -354,6 +353,7 @@
         },
         {
           "name": "姬崎莉波",
+          "label": "$姬崎莉波",
           "pipeline_override": {
             "WorkChooseShow": {
               "custom_recognition": "WorkChooseIdol",
@@ -365,6 +365,7 @@
         },
         {
           "name": "紫云清夏",
+          "label": "$紫云清夏",
           "pipeline_override": {
             "WorkChooseShow": {
               "custom_recognition": "WorkChooseIdol",
@@ -376,6 +377,7 @@
         },
         {
           "name": "篠泽广",
+          "label": "$篠泽广",
           "pipeline_override": {
             "WorkChooseShow": {
               "custom_recognition": "WorkChooseIdol",
@@ -387,6 +389,7 @@
         },
         {
           "name": "葛城莉莉亚",
+          "label": "$葛城莉莉亚",
           "pipeline_override": {
             "WorkChooseShow": {
               "custom_recognition": "WorkChooseIdol",
@@ -398,6 +401,7 @@
         },
         {
           "name": "仓本千奈",
+          "label": "$仓本千奈",
           "pipeline_override": {
             "WorkChooseShow": {
               "custom_recognition": "WorkChooseIdol",
@@ -409,6 +413,7 @@
         },
         {
           "name": "有村麻央",
+          "label": "$有村麻央",
           "pipeline_override": {
             "WorkChooseShow": {
               "custom_recognition": "WorkChooseIdol",
@@ -420,6 +425,7 @@
         },
         {
           "name": "花海佑芽",
+          "label": "$花海佑芽",
           "pipeline_override": {
             "WorkChooseShow": {
               "custom_recognition": "WorkChooseIdol",
@@ -431,6 +437,7 @@
         },
         {
           "name": "秦谷美铃",
+          "label": "$秦谷美铃",
           "pipeline_override": {
             "WorkChooseShow": {
               "custom_recognition": "WorkChooseIdol",
@@ -442,6 +449,7 @@
         },
         {
           "name": "十王星南",
+          "label": "$十王星南",
           "pipeline_override": {
             "WorkChooseShow": {
               "custom_recognition": "WorkChooseIdol",
@@ -453,6 +461,7 @@
         },
         {
           "name": "雨夜燕子",
+          "label": "$雨夜燕子",
           "pipeline_override": {
             "WorkChooseShow": {
               "custom_recognition": "WorkChooseIdol",
@@ -470,6 +479,7 @@
       "cases": [
         {
           "name": "自动",
+          "label": "$自动",
           "pipeline_override": {
             "WorkChooseShow": {
               "custom_recognition": "WorkChooseAuto"
@@ -478,6 +488,7 @@
         },
         {
           "name": "花海咲季",
+          "label": "$花海咲季",
           "pipeline_override": {
             "WorkChooseLive": {
               "custom_recognition": "WorkChooseIdol",
@@ -489,6 +500,7 @@
         },
         {
           "name": "月村手毬",
+          "label": "$月村手毬",
           "pipeline_override": {
             "WorkChooseLive": {
               "custom_recognition": "WorkChooseIdol",
@@ -500,6 +512,7 @@
         },
         {
           "name": "藤田琴音",
+          "label": "$藤田琴音",
           "pipeline_override": {
             "WorkChooseLive": {
               "custom_recognition": "WorkChooseIdol",
@@ -511,6 +524,7 @@
         },
         {
           "name": "姬崎莉波",
+          "label": "$姬崎莉波",
           "pipeline_override": {
             "WorkChooseLive": {
               "custom_recognition": "WorkChooseIdol",
@@ -522,6 +536,7 @@
         },
         {
           "name": "紫云清夏",
+          "label": "$紫云清夏",
           "pipeline_override": {
             "WorkChooseLive": {
               "custom_recognition": "WorkChooseIdol",
@@ -533,6 +548,7 @@
         },
         {
           "name": "篠泽广",
+          "label": "$篠泽广",
           "pipeline_override": {
             "WorkChooseLive": {
               "custom_recognition": "WorkChooseIdol",
@@ -544,6 +560,7 @@
         },
         {
           "name": "葛城莉莉亚",
+          "label": "$葛城莉莉亚",
           "pipeline_override": {
             "WorkChooseLive": {
               "custom_recognition": "WorkChooseIdol",
@@ -555,6 +572,7 @@
         },
         {
           "name": "仓本千奈",
+          "label": "$仓本千奈",
           "pipeline_override": {
             "WorkChooseLive": {
               "custom_recognition": "WorkChooseIdol",
@@ -566,6 +584,7 @@
         },
         {
           "name": "有村麻央",
+          "label": "$有村麻央",
           "pipeline_override": {
             "WorkChooseLive": {
               "custom_recognition": "WorkChooseIdol",
@@ -577,6 +596,7 @@
         },
         {
           "name": "花海佑芽",
+          "label": "$花海佑芽",
           "pipeline_override": {
             "WorkChooseLive": {
               "custom_recognition": "WorkChooseIdol",
@@ -588,6 +608,7 @@
         },
         {
           "name": "秦谷美铃",
+          "label": "$秦谷美铃",
           "pipeline_override": {
             "WorkChooseLive": {
               "custom_recognition": "WorkChooseIdol",
@@ -599,6 +620,7 @@
         },
         {
           "name": "十王星南",
+          "label": "$十王星南",
           "pipeline_override": {
             "WorkChooseLive": {
               "custom_recognition": "WorkChooseIdol",
@@ -610,6 +632,7 @@
         },
         {
           "name": "雨夜燕子",
+          "label": "$雨夜燕子",
           "pipeline_override": {
             "WorkChooseLive": {
               "custom_recognition": "WorkChooseIdol",
@@ -628,6 +651,7 @@
       "cases": [
         {
           "name": "自动",
+          "label": "$自动",
           "pipeline_override": {
             "SocietyRequestChoose": {
               "recognition": "Custom",
@@ -637,6 +661,8 @@
         },
         {
           "name": "感性笔记(声乐)",
+          "label": "$感性笔记(声乐)",
+          "description": "![](resource/base/image/items/sense_red.png)",
           "pipeline_override": {
             "SocietyRequestChoose": {
               "recognition": "FeatureMatch",
@@ -646,6 +672,8 @@
         },
         {
           "name": "感性笔记(舞蹈)",
+          "label": "$感性笔记(舞蹈)",
+          "description": "![](resource/base/image/items/sense_blue.png)",
           "pipeline_override": {
             "SocietyRequestChoose": {
               "recognition": "FeatureMatch",
@@ -655,6 +683,8 @@
         },
         {
           "name": "感性笔记(形象)",
+          "label": "$感性笔记(形象)",
+          "description": "![](resource/base/image/items/sense_yellow.png)",
           "pipeline_override": {
             "SocietyRequestChoose": {
               "recognition": "FeatureMatch",
@@ -664,6 +694,8 @@
         },
         {
           "name": "理性笔记(声乐)",
+          "label": "$理性笔记(声乐)",
+          "description": "![](resource/base/image/items/logic_red.png)",
           "pipeline_override": {
             "SocietyRequestChoose": {
               "recognition": "FeatureMatch",
@@ -673,6 +705,8 @@
         },
         {
           "name": "理性笔记(舞蹈)",
+          "label": "$理性笔记(舞蹈)",
+          "description": "![](resource/base/image/items/logic_blue.png)",
           "pipeline_override": {
             "SocietyRequestChoose": {
               "recognition": "FeatureMatch",
@@ -682,6 +716,8 @@
         },
         {
           "name": "理性笔记(形象)",
+          "label": "$理性笔记(形象)",
+          "description": "![](resource/base/image/items/logic_yellow.png)",
           "pipeline_override": {
             "SocietyRequestChoose": {
               "recognition": "FeatureMatch",
@@ -691,6 +727,8 @@
         },
         {
           "name": "非凡笔记(声乐)",
+          "label": "$非凡笔记(声乐)",
+          "description": "![](resource/base/image/items/anomaly_red.png)",
           "pipeline_override": {
             "SocietyRequestChoose": {
               "recognition": "FeatureMatch",
@@ -700,6 +738,8 @@
         },
         {
           "name": "非凡笔记(舞蹈)",
+          "label": "$非凡笔记(舞蹈)",
+          "description": "![](resource/base/image/items/anomaly_blue.png)",
           "pipeline_override": {
             "SocietyRequestChoose": {
               "recognition": "FeatureMatch",
@@ -709,6 +749,8 @@
         },
         {
           "name": "非凡笔记(形象)",
+          "label": "$非凡笔记(形象)",
+          "description": "![](resource/base/image/items/anomaly_yellow.png)",
           "pipeline_override": {
             "SocietyRequestChoose": {
               "recognition": "FeatureMatch",
@@ -963,7 +1005,9 @@
             "购买[Fighting My Way]花海咲季",
             "购买[Wonder Scale]仓本千柰",
             "购买[Fluorite]有村麻央",
-            "购买[clumsy trick]姬崎莉波"
+            "购买[clumsy trick]姬崎莉波",
+            "购买[ツキノカメ]秦谷美鈴",
+            "购买[小さな野望]十王星南"
           ]
         },
         {
@@ -979,7 +1023,7 @@
     },
     "启用AP兑换": {
       "type": "switch",
-      "default_case": "Yes",
+      "default_case": "No",
       "cases": [
         {
           "name": "Yes",
@@ -1055,6 +1099,7 @@
     "购买感性笔记(声乐)": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/sense_blue.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1078,6 +1123,7 @@
     "购买感性笔记(舞蹈)": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/sense_red.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1101,6 +1147,7 @@
     "购买感性笔记(形象)": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/sense_yellow.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1124,6 +1171,7 @@
     "购买理性笔记(声乐)": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/logic_blue.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1147,6 +1195,7 @@
     "购买理性笔记(舞蹈)": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/logic_red.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1170,6 +1219,7 @@
     "购买理性笔记(形象)": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/logic_yellow.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1193,6 +1243,7 @@
     "购买非凡笔记(声乐)": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/anomaly_blue.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1216,6 +1267,7 @@
     "购买非凡笔记(舞蹈)": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/anomaly_red.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1239,6 +1291,7 @@
     "购买非凡笔记(形象)": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/anomaly_yellow.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1262,6 +1315,7 @@
     "购买课程笔记": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/lesson_note.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1285,6 +1339,7 @@
     "购买资深笔记": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/veteran_note.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1308,6 +1363,7 @@
     "购买支援强化Pt": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/support_point.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1331,6 +1387,7 @@
     "购买再挑战卷": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/challenge_ticket.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1354,6 +1411,7 @@
     "购买记录钥匙": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/record_key.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1377,6 +1435,7 @@
     "购买[The rolling Riceball]花海佑芽": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/hanami_ume_shards.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1400,6 +1459,7 @@
     "购买[白线]葛城莉莉亚": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/katuragi_ririya_shards.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1423,6 +1483,7 @@
     "购买[光景]篠泽广": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/sasazawa_hiro_shards.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1446,6 +1507,7 @@
     "购买[Tame-Lie-One-Step]紫云清夏": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/sion_sumika_shards.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1469,6 +1531,7 @@
     "购买[Luna say maybe]月村手毬": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/tukimura_temari_shards.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1492,6 +1555,7 @@
     "购买[世界一可愛い私]藤田琴音": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/huzita_kotone_shards.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1515,6 +1579,7 @@
     "购买[Fighting My Way]花海咲季": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/hanami_saki_shards.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1538,6 +1603,7 @@
     "购买[Wonder Scale]仓本千柰": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/kuramoto_tina_shards.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1561,6 +1627,7 @@
     "购买[Fluorite]有村麻央": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/arimura_mao_shards.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1584,6 +1651,7 @@
     "购买[clumsy trick]姬崎莉波": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/himezaki_rinami_shards.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1604,9 +1672,58 @@
       ],
       "label": "$购买[clumsy trick]姬崎莉波"
     },
+    "购买[ツキノカメ]秦谷美鈴": {
+      "type": "switch",
+      "default_case": "No",
+      "description": "![](resource/base/image/items/misuzu_hataya_shards.png)",
+      "cases": [
+        {
+          "name": "Yes",
+          "pipeline_override": {
+            "ShoppingDailyExchangeItemsMisuzuHataya": {
+              "enabled": true
+            }
+          }
+        },
+        {
+          "name": "No",
+          "pipeline_override": {
+            "ShoppingDailyExchangeItemsMisuzuHataya": {
+              "enabled": false
+            }
+          }
+        }
+      ],
+      "label": "$购买[ツキノカメ]秦谷美鈴"
+    },
+    "购买[小さな野望]十王星南": {
+      "type": "switch",
+      "default_case": "No",
+      "description": "![](resource/base/image/items/sena_juo_shards.png)",
+      "cases": [
+        {
+          "name": "Yes",
+          "pipeline_override": {
+            "ShoppingDailyExchangeItemsSenaJuo": {
+              "enabled": true
+            }
+          }
+        },
+        {
+          "name": "No",
+          "pipeline_override": {
+            "ShoppingDailyExchangeItemsSenaJuo": {
+              "enabled": false
+            }
+          }
+        }
+      ],
+      "label": "$购买[小さな野望]十王星南"
+    },
     "购买支援强化Pt提升": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/support_point_increased.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1630,6 +1747,7 @@
     "购买笔记数量提升": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/note_increased.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1653,6 +1771,7 @@
     "购买再挑战卷(AP)": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/challenge_ticket.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1676,6 +1795,7 @@
     "购买回忆生成卷": {
       "type": "switch",
       "default_case": "No",
+      "description": "![](resource/base/image/items/memory_ticket.png)",
       "cases": [
         {
           "name": "Yes",
@@ -1824,9 +1944,69 @@
       "default_case": "紫云清夏",
       "cases": [
         {
+          "name": "花海咲季",
+          "option": [
+            "花海咲季卡片"
+          ]
+        },
+        {
+          "name": "月村手毬",
+          "option": [
+            "月村手毬卡片"
+          ]
+        },
+        {
+          "name": "藤田琴音",
+          "option": [
+            "藤田ことね卡片"
+          ]
+        },
+        {
+          "name": "有村麻央",
+          "option": [
+            "有村麻央卡片"
+          ]
+        },
+        {
+          "name": "葛城リーリヤ",
+          "option": [
+            "葛城リーリヤ卡片"
+          ]
+        },
+        {
           "name": "倉本千奈",
           "option": [
             "倉本千奈卡片"
+          ]
+        },
+        {
+          "name": "紫云清夏",
+          "option": [
+            "紫雲清夏卡片"
+          ]
+        },
+        {
+          "name": "篠泽广",
+          "option": [
+            "篠澤広卡片"
+          ]
+        },
+        {
+          "name": "姫崎莉波",
+          "option": [
+            "姫崎莉波卡片"
+          ]
+        },
+        {
+          "name": "花海佑芽",
+          "option": [
+            "花海佑芽卡片"
+          ]
+        },
+        {
+          "name": "秦谷美玲",
+          "option": [
+            "秦谷美鈴卡片"
           ]
         },
         {
@@ -1839,66 +2019,6 @@
           "name": "雨夜燕",
           "option": [
             "雨夜燕卡片"
-          ]
-        },
-        {
-          "name": "姫崎莉波",
-          "option": [
-            "姫崎莉波卡片"
-          ]
-        },
-        {
-          "name": "月村手毬",
-          "option": [
-            "月村手毬卡片"
-          ]
-        },
-        {
-          "name": "有村麻央",
-          "option": [
-            "有村麻央卡片"
-          ]
-        },
-        {
-          "name": "秦谷美玲",
-          "option": [
-            "秦谷美鈴卡片"
-          ]
-        },
-        {
-          "name": "篠泽广",
-          "option": [
-            "篠澤広卡片"
-          ]
-        },
-        {
-          "name": "紫云清夏",
-          "option": [
-            "紫雲清夏卡片"
-          ]
-        },
-        {
-          "name": "花海佑芽",
-          "option": [
-            "花海佑芽卡片"
-          ]
-        },
-        {
-          "name": "花海咲季",
-          "option": [
-            "花海咲季卡片"
-          ]
-        },
-        {
-          "name": "葛城リーリヤ",
-          "option": [
-            "葛城リーリヤ卡片"
-          ]
-        },
-        {
-          "name": "藤田琴音",
-          "option": [
-            "藤田ことね卡片"
           ]
         }
       ],
@@ -1926,6 +2046,28 @@
               "custom_recognition_param": {
                 "idol_name": "雨夜燕",
                 "song_name": "理論武装して"
+              }
+            }
+          }
+        },
+        {
+          "name": "雨夜燕(初志貫徹)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "雨夜燕",
+                "song_name": "初志貫徹"
+              }
+            }
+          }
+        },
+        {
+          "name": "雨夜燕(学園生活)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "雨夜燕",
+                "song_name": "学園生活"
               }
             }
           }
@@ -2004,6 +2146,17 @@
           }
         },
         {
+          "name": "藤田ことね(初声)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "藤田ことね",
+                "song_name": "初声"
+              }
+            }
+          }
+        },
+        {
           "name": "藤田ことね(Yellow Big Bang！)",
           "pipeline_override": {
             "ProduceChooseIdol": {
@@ -2021,6 +2174,28 @@
               "custom_recognition_param": {
                 "idol_name": "藤田ことね",
                 "song_name": "世界一可愛い私"
+              }
+            }
+          }
+        },
+        {
+          "name": "藤田ことね(カワイイ♡はじめました)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "藤田ことね",
+                "song_name": "カワイイ♡はじめました"
+              }
+            }
+          }
+        },
+        {
+          "name": "藤田ことね(学園生活)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "藤田ことね",
+                "song_name": "学園生活"
               }
             }
           }
@@ -2099,6 +2274,17 @@
           }
         },
         {
+          "name": "葛城リーリヤ(初心)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "葛城リーリヤ",
+                "song_name": "初心"
+              }
+            }
+          }
+        },
+        {
           "name": "葛城リーリヤ(冠菊)",
           "pipeline_override": {
             "ProduceChooseIdol": {
@@ -2116,6 +2302,28 @@
               "custom_recognition_param": {
                 "idol_name": "葛城リーリヤ",
                 "song_name": "白線"
+              }
+            }
+          }
+        },
+        {
+          "name": "葛城リーリヤ(一つ踏み出した先に)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "葛城リーリヤ",
+                "song_name": "一つ踏み出した先に"
+              }
+            }
+          }
+        },
+        {
+          "name": "葛城リーリヤ(学園生活)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "葛城リーリヤ",
+                "song_name": "学園生活"
               }
             }
           }
@@ -2183,6 +2391,17 @@
           }
         },
         {
+          "name": "花海咲季(初声)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "花海咲季",
+                "song_name": "初声"
+              }
+            }
+          }
+        },
+        {
           "name": "花海咲季(冠菊)",
           "pipeline_override": {
             "ProduceChooseIdol": {
@@ -2211,6 +2430,28 @@
               "custom_recognition_param": {
                 "idol_name": "花海咲季",
                 "song_name": "Fighting My Way"
+              }
+            }
+          }
+        },
+        {
+          "name": "花海咲季(わたしが一番！)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "花海咲季",
+                "song_name": "わたしが一番！"
+              }
+            }
+          }
+        },
+        {
+          "name": "花海咲季(学園生活)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "花海咲季",
+                "song_name": "学園生活"
               }
             }
           }
@@ -2245,6 +2486,17 @@
           }
         },
         {
+          "name": "花海佑芽(初陣)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "花海佑芽",
+                "song_name": "初陣"
+              }
+            }
+          }
+        },
+        {
           "name": "花海佑芽(Campus mode!!)",
           "pipeline_override": {
             "ProduceChooseIdol": {
@@ -2273,6 +2525,28 @@
               "custom_recognition_param": {
                 "idol_name": "花海佑芽",
                 "song_name": "The Rolling Riceball"
+              }
+            }
+          }
+        },
+        {
+          "name": "花海佑芽(アイドル、はじめっ！)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "花海佑芽",
+                "song_name": "アイドル、はじめっ！"
+              }
+            }
+          }
+        },
+        {
+          "name": "花海佑芽(学園生活)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "花海佑芽",
+                "song_name": "学園生活"
               }
             }
           }
@@ -2340,6 +2614,17 @@
           }
         },
         {
+          "name": "紫雲清夏(初恋)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "紫雲清夏",
+                "song_name": "初恋"
+              }
+            }
+          }
+        },
+        {
           "name": "紫雲清夏(キミとセミブルー)",
           "pipeline_override": {
             "ProduceChooseIdol": {
@@ -2357,6 +2642,28 @@
               "custom_recognition_param": {
                 "idol_name": "紫雲清夏",
                 "song_name": "Tame-Lie-One-Step"
+              }
+            }
+          }
+        },
+        {
+          "name": "紫雲清夏(夢へのリスタート)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "紫雲清夏",
+                "song_name": "夢へのリスタート"
+              }
+            }
+          }
+        },
+        {
+          "name": "紫雲清夏(学園生活)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "紫雲清夏",
+                "song_name": "学園生活"
               }
             }
           }
@@ -2413,6 +2720,17 @@
           }
         },
         {
+          "name": "篠澤広(初恋)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "篠澤広",
+                "song_name": "初恋"
+              }
+            }
+          }
+        },
+        {
           "name": "篠澤広(仮装狂騒曲)",
           "pipeline_override": {
             "ProduceChooseIdol": {
@@ -2444,14 +2762,47 @@
               }
             }
           }
+        },
+        {
+          "name": "篠澤広(一番向いてないこと)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "篠澤広",
+                "song_name": "一番向いてないこと"
+              }
+            }
+          }
+        },
+        {
+          "name": "篠澤広(学園生活)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "篠澤広",
+                "song_name": "学園生活"
+              }
+            }
+          }
         }
       ],
       "label": "$篠澤広卡片"
     },
     "秦谷美鈴卡片": {
       "type": "select",
-      "default_case": "秦谷美鈴(Star-mine)",
+      "default_case": "秦谷美鈴(Superlative)",
       "cases": [
+        {
+          "name": "秦谷美鈴(Superlative)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "秦谷美鈴",
+                "song_name": "Superlative"
+              }
+            }
+          }
+        },
         {
           "name": "秦谷美鈴(Star-mine)",
           "pipeline_override": {
@@ -2459,6 +2810,17 @@
               "custom_recognition_param": {
                 "idol_name": "秦谷美鈴",
                 "song_name": "Star-mine"
+              }
+            }
+          }
+        },
+        {
+          "name": "秦谷美鈴(初陣)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "秦谷美鈴",
+                "song_name": "初陣"
               }
             }
           }
@@ -2481,6 +2843,28 @@
               "custom_recognition_param": {
                 "idol_name": "秦谷美鈴",
                 "song_name": "ツキノカメ"
+              }
+            }
+          }
+        },
+        {
+          "name": "秦谷美鈴(ゆっくり、一歩ずつ)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "秦谷美鈴",
+                "song_name": "ゆっくり、一歩ずつ"
+              }
+            }
+          }
+        },
+        {
+          "name": "秦谷美鈴(学園生活)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "秦谷美鈴",
+                "song_name": "学園生活"
               }
             }
           }
@@ -2537,6 +2921,17 @@
           }
         },
         {
+          "name": "有村麻央(初恋)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "有村麻央",
+                "song_name": "初恋"
+              }
+            }
+          }
+        },
+        {
           "name": "有村麻央(Feel Jewel Dream)",
           "pipeline_override": {
             "ProduceChooseIdol": {
@@ -2568,14 +2963,47 @@
               }
             }
           }
+        },
+        {
+          "name": "有村麻央(はじまりはカッコよく)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "有村麻央",
+                "song_name": "はじまりはカッコよく"
+              }
+            }
+          }
+        },
+        {
+          "name": "有村麻央(学園生活)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "有村麻央",
+                "song_name": "学園生活"
+              }
+            }
+          }
         }
       ],
       "label": "$有村麻央卡片"
     },
     "月村手毬卡片": {
       "type": "select",
-      "default_case": "月村手毬(がむしゃらに行こう！)",
+      "default_case": "月村手毬(一体いつから)",
       "cases": [
+        {
+          "name": "月村手毬(一体いつから)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "月村手毬",
+                "song_name": "一体いつから"
+              }
+            }
+          }
+        },
         {
           "name": "月村手毬(がむしゃらに行こう！)",
           "pipeline_override": {
@@ -2632,6 +3060,17 @@
           }
         },
         {
+          "name": "月村手毬(初声)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "月村手毬",
+                "song_name": "初声"
+              }
+            }
+          }
+        },
+        {
           "name": "月村手毬(アイヴイ)",
           "pipeline_override": {
             "ProduceChooseIdol": {
@@ -2649,6 +3088,28 @@
               "custom_recognition_param": {
                 "idol_name": "月村手毬",
                 "song_name": "Luna say maybe"
+              }
+            }
+          }
+        },
+        {
+          "name": "月村手毬(一匹狼)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "月村手毬",
+                "song_name": "一匹狼"
+              }
+            }
+          }
+        },
+        {
+          "name": "月村手毬(学園生活)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "月村手毬",
+                "song_name": "学園生活"
               }
             }
           }
@@ -2727,6 +3188,17 @@
           }
         },
         {
+          "name": "姫崎莉波(初心)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "姫崎莉波",
+                "song_name": "初心"
+              }
+            }
+          }
+        },
+        {
           "name": "姫崎莉波(キミとセミブルー)",
           "pipeline_override": {
             "ProduceChooseIdol": {
@@ -2747,6 +3219,28 @@
               }
             }
           }
+        },
+        {
+          "name": "姫崎莉波(『私らしさ』のはじまり)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "姫崎莉波",
+                "song_name": "『私らしさ』のはじまり"
+              }
+            }
+          }
+        },
+        {
+          "name": "姫崎莉波(学園生活)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "姫崎莉波",
+                "song_name": "学園生活"
+              }
+            }
+          }
         }
       ],
       "label": "$姫崎莉波卡片"
@@ -2762,6 +3256,17 @@
               "custom_recognition_param": {
                 "idol_name": "十王星南",
                 "song_name": "Star-mine"
+              }
+            }
+          }
+        },
+        {
+          "name": "十王星南(初陣)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "十王星南",
+                "song_name": "初陣"
               }
             }
           }
@@ -2806,6 +3311,28 @@
               "custom_recognition_param": {
                 "idol_name": "十王星南",
                 "song_name": "小さな野望"
+              }
+            }
+          }
+        },
+        {
+          "name": "十王星南(一番星)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "十王星南",
+                "song_name": "一番星"
+              }
+            }
+          }
+        },
+        {
+          "name": "十王星南(学園生活)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "十王星南",
+                "song_name": "学園生活"
               }
             }
           }
@@ -2884,6 +3411,17 @@
           }
         },
         {
+          "name": "倉本千奈(初心)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "倉本千奈",
+                "song_name": "初心"
+              }
+            }
+          }
+        },
+        {
           "name": "倉本千奈(日々、発見的ステップ！)",
           "pipeline_override": {
             "ProduceChooseIdol": {
@@ -2901,6 +3439,28 @@
               "custom_recognition_param": {
                 "idol_name": "倉本千奈",
                 "song_name": "Wonder Scale"
+              }
+            }
+          }
+        },
+        {
+          "name": "倉本千奈(胸を張って一歩ずつ)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "倉本千奈",
+                "song_name": "胸を張って一歩ずつ"
+              }
+            }
+          }
+        },
+        {
+          "name": "倉本千奈(学園生活)",
+          "pipeline_override": {
+            "ProduceChooseIdol": {
+              "custom_recognition_param": {
+                "idol_name": "倉本千奈",
+                "song_name": "学園生活"
               }
             }
           }
