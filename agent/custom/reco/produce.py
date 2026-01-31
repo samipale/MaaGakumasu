@@ -251,19 +251,15 @@ class ProduceOptionsFlagAuto(CustomRecognition):
             argv: CustomRecognition.AnalyzeArg,
     ) -> Union[CustomRecognition.AnalyzeResult, Optional[RectType]]:
         context.run_task("Click_1")
-        # 分两段判断，减轻ProduceEntry节点压力
         options_reco_detail = context.run_recognition("ProduceRecognitionOptions", argv.image)
+        if (not options_reco_detail or not options_reco_detail.hit or
+            options_reco_detail.best_result.box[1] < 600 or options_reco_detail.best_result.box[1] > 900 or
+                options_reco_detail.best_result.score < 0.8):
+            return CustomRecognition.AnalyzeResult(box=None, detail={"detail": "未识别到选择场景"})
         match_score = options_reco_detail.best_result.score
         match_score = f"{match_score:.3f}"
         match_box = options_reco_detail.best_result.box
         match_box = f"{match_box[0]},{match_box[1]},{match_box[2]},{match_box[3]}"
-        if (not options_reco_detail or not options_reco_detail.hit or
-            options_reco_detail.best_result.box[2] < 300 or
-                options_reco_detail.best_result.score < 0.75):
-            # 以下为开发功能，不要上传至github
-            save_train_data(argv.image, "options", f"out-{match_score}({match_box})")
-            # 以上为开发功能，不要上传至github
-            return CustomRecognition.AnalyzeResult(box=None, detail={"detail": "未识别到选择场景"})
         if context.run_recognition("ProduceRecognitionPushEvent", argv.image).hit:
             event = "Push"
         elif context.run_recognition("ProduceRecognitionLessonEvent", argv.image).hit:
@@ -347,21 +343,21 @@ class ProduceOptionsFlagAuto(CustomRecognition):
 
         elif event == "Lesson":
             logger.success("事件: 上课")
-            # 体力课程，默认选择体力-4的选项
+            # 体力课程，默认选择体力-4或-5的选项
             reco_detail = context.run_recognition(
                 "ProduceChooseLessonOption", image,
                 pipeline_override={"ProduceChooseLessonOption": {
                     "recognition": "TemplateMatch",
-                    "template": "produce/lesson_health-4.png",
+                    "template": ["produce/lesson_health-4.png", "produce/lesson_health-5.png"],
                     "roi": [0, 600, 720, 350],
-                    "threshold": 0.9
+                    "threshold": 0.95
                 }}
             )
             if reco_detail.hit:
                 # 以下为开发功能，不要上传至github
                 save_train_data(argv.image,"options",f"lesson-{match_score}({match_box})")
                 # 以上为开发功能，不要上传至github
-                logger.success("选择消耗4体力的选项")
+                logger.success("选择消耗4体力或5体力的选项")
                 result = reco_detail.best_result.box
                 result[0] = result[0] - 200
                 result[1] = result[1] + 50

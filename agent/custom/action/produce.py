@@ -491,7 +491,7 @@ class ProduceChooseEventAuto(CustomAction):
 class ProduceCardsAuto(CustomAction):
     """
         自动识别根据系统提示出牌
-        10秒未检测到提示牌，则打出最高分的牌
+        12秒未检测到提示牌，则打出最高分的牌
         识别不到体力退出函数
         处理是否打出该牌的弹窗
     """
@@ -584,7 +584,7 @@ class ProduceCardsAuto(CustomAction):
                     self.start_time = time.time()
 
                 end_time = time.time()
-                if end_time - self.start_time > 10:
+                if end_time - self.start_time > 12:
                     if best_box[1] < 840 or best_box[1] > 1150:
                         continue
 
