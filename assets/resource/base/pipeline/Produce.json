@@ -360,8 +360,7 @@
                     "next.png",
                     "cancel.png",
                     "close_icon.png",
-                    "produce/close.png",
-                    "produce/cards_get.png"
+                    "produce/close.png"
                 ],
                 "order_by": "Score",
                 "roi": [
@@ -523,7 +522,8 @@
             "type": "TemplateMatch",
             "param": {
                 "template": [
-                    "produce/drink_get.png"
+                    "produce/drink_get.png",
+                    "produce/cards_get.png"
                 ],
                 "roi": [
                     0,

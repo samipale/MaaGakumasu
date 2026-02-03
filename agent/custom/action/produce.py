@@ -612,12 +612,6 @@ class ProduceCardsAuto(CustomAction):
                         self._play_a_card(context, best_box)
 
             else:
-                # 处理意外打开的界面
-                reco_detail = context.run_recognition("ProducePlayingCardCloseButton", image)
-                if reco_detail and reco_detail.hit:
-                    best_box = reco_detail.box
-                    context.tasker.controller.post_click(best_box[0], best_box[1]).wait()
-
                 reco_detail = context.run_recognition("ProduceRecognitionHealthFlag", image)
                 if not (reco_detail and reco_detail.hit):
                     logger.info("未检测到卡片和体力")
