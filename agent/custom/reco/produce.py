@@ -260,11 +260,15 @@ class ProduceOptionsFlagAuto(CustomRecognition):
         match_score = f"{match_score:.3f}"
         match_box = options_reco_detail.best_result.box
         match_box = f"{match_box[0]},{match_box[1]},{match_box[2]},{match_box[3]}"
-        if context.run_recognition("ProduceRecognitionPushEvent", argv.image).hit:
+        # 因为选项显示出来了，左上角的目前培育阶段不一定显示出来，所以需要等一秒再截一次图
+        time.sleep(1)
+        # context.wait_freezes(200)
+        image = context.tasker.controller.post_screencap().wait().get()
+        if context.run_recognition("ProduceRecognitionPushEvent", image).hit:
             event = "Push"
-        elif context.run_recognition("ProduceRecognitionLessonEvent", argv.image).hit:
+        elif context.run_recognition("ProduceRecognitionLessonEvent", image).hit:
             event = "Lesson"
-        elif context.run_recognition("ProduceRecognitionGoOutEvent", argv.image).hit:
+        elif context.run_recognition("ProduceRecognitionGoOutEvent", image).hit:
             event = "GoOut"
         else:
             # 以下为开发功能，不要上传至github
@@ -272,12 +276,14 @@ class ProduceOptionsFlagAuto(CustomRecognition):
             # 以上为开发功能，不要上传至github
             logger.success("事件: 开局会话选择")
             result = options_reco_detail.best_result.box
+            # 曾经试过点击失败过，所以再等一秒，这个游戏是有可能整个画面都出来了但是还没开始允许有效点击的
+            time.sleep(1)
             context.tasker.controller.post_click(result[0] + result[2] // 2,
                                                  result[1] + result[3] // 2).wait()
             time.sleep(0.2)
             context.tasker.controller.post_click(result[0] + result[2] // 2,
                                                  result[1] + result[3] // 2).wait()
-            return CustomRecognition.AnalyzeResult(box=None, detail={"detail": "会话场景"})
+            return CustomRecognition.AnalyzeResult(box=result, detail={"detail": "会话场景"})
 
         # 成功进入场景，重新截图
         if event == "Push":
