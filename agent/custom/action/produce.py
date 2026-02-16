@@ -917,7 +917,6 @@ class ProduceShoppingAuto(CustomAction):
                 return False
 
             count += 1
-            time.sleep(0.5)
 
         return False
 
