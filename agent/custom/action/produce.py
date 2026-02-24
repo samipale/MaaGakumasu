@@ -556,7 +556,7 @@ class ProduceCardsAuto(CustomAction):
                         break
                     logger.warning("!!!!!!!!无可用牌!!!!!!!!!!!")
                     # 以下为开发功能，不要上传至github
-                    save_train_data(image, 'cards',f'out-{hits}hit-{suggestions},{cards},{useless}-')
+                    # save_train_data(image, 'cards',f'out-{hits}hit-{suggestions},{cards},{useless}-')
                     # 以上为开发功能，不要上传至github
                     context.run_task("ProduceRecognitionSkipRound")
                     self._wait_until_playable(context)
@@ -766,6 +766,14 @@ class ProduceCardsAuto(CustomAction):
                     return False
             else:
                 count_exit = 0
+
+            # 解决莫名其妙的误触问题
+            reco_detail = context.run_recognition("ProduceButton", image)
+            if reco_detail and reco_detail.hit:
+                # 以下为开发功能，不要上传至github
+                save_train_data(image, 'cards', f'mistouch')
+                # 以上为开发功能，不要上传至github
+                context.run_task("ProduceButton")
 
             # 处理移动卡片界面
             if self._handle_move_cards(context, image):

@@ -272,7 +272,7 @@ class ProduceOptionsFlagAuto(CustomRecognition):
             event = "GoOut"
         else:
             # 以下为开发功能，不要上传至github
-            save_train_data(argv.image, "options", f"week-{match_score}({match_box})")
+            # save_train_data(argv.image, "options", f"week-{match_score}({match_box})")
             # 以上为开发功能，不要上传至github
             logger.success("事件: 开局会话选择")
             result = options_reco_detail.best_result.box
@@ -334,7 +334,7 @@ class ProduceOptionsFlagAuto(CustomRecognition):
             # 输出冲刺选项
             if reco_detail.hit:
                 # 以下为开发功能，不要上传至github
-                save_train_data(argv.image, "options", f"push-{match_score}({match_box})")
+                # save_train_data(argv.image, "options", f"push-{match_score}({match_box})")
                 # 以上为开发功能，不要上传至github
                 result = reco_detail.best_result.box
                 context.tasker.controller.post_click(result[0] + int(result[2] / 2),
@@ -361,7 +361,7 @@ class ProduceOptionsFlagAuto(CustomRecognition):
             )
             if reco_detail.hit:
                 # 以下为开发功能，不要上传至github
-                save_train_data(argv.image,"options",f"lesson-{match_score}({match_box})")
+                # save_train_data(argv.image,"options",f"lesson-{match_score}({match_box})")
                 # 以上为开发功能，不要上传至github
                 logger.success("选择消耗4体力或5体力的选项")
                 result = reco_detail.best_result.box
@@ -384,7 +384,7 @@ class ProduceOptionsFlagAuto(CustomRecognition):
             )
             if reco_detail.hit:
                 # 以下为开发功能，不要上传至github
-                save_train_data(argv.image,"options",f"lesson-{match_score}({match_box})")
+                # save_train_data(argv.image,"options",f"lesson-{match_score}({match_box})")
                 # 以上为开发功能，不要上传至github
                 logger.success("普通课程（出牌模式），随机选择")
                 result = reco_detail.best_result.box
@@ -456,7 +456,7 @@ class ProduceOptionsFlagAuto(CustomRecognition):
             # 输出外出选项
             if result:
                 # 以下为开发功能，不要上传至github
-                save_train_data(argv.image,"options",f"goout-{match_score}({match_box})")
+                # save_train_data(argv.image,"options",f"goout-{match_score}({match_box})")
                 # 以上为开发功能，不要上传至github
                 context.tasker.controller.post_click(result[0], result[1]).wait()
                 time.sleep(0.2)
