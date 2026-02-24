@@ -593,7 +593,10 @@
         },
         "next": [
             "ProduceGetCards"
-        ]
+        ],
+        "attach": {
+            "priority": []
+        }
     },
     "ProduceGetCards": {
         "recognition": {
