@@ -138,7 +138,8 @@ class ProduceChooseCardsAuto(CustomRecognition):
             context: Context,
             argv: CustomRecognition.AnalyzeArg,
     ) -> Union[CustomRecognition.AnalyzeResult, Optional[RectType]]:
-
+        logger.success("事件: 选择卡牌")
+        
         # 从节点中获取配置的优先级
         node_data = context.get_node_data("ProduceChooseCards")
         priority = node_data.get("attach", {}).get("priority", [])
