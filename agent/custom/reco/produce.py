@@ -163,7 +163,7 @@ class ProduceChooseCardsAuto(CustomRecognition):
         return CustomRecognition.AnalyzeResult(box=result, detail={"detail": "选择第一张卡"})
 
     @staticmethod
-    def _get_suggestion_card(context: Context, argv: CustomRecognition.AnalyzeArg):
+    def _get_event_card(context: Context, argv: CustomRecognition.AnalyzeArg):
         reco_detail_event = context.run_recognition(
             "ProduceChooseEventCards", argv.image,
             pipeline_override={"ProduceChooseEventCards": {
@@ -173,12 +173,12 @@ class ProduceChooseCardsAuto(CustomRecognition):
             }})
         if reco_detail_event and reco_detail_event.hit:
             result = reco_detail_event.best_result.box
-            result[1] = result[1] - 80
+            result[1] = result[1] + 80
             return result
         return None
 
     @staticmethod
-    def _get_event_card(context: Context, argv: CustomRecognition.AnalyzeArg):
+    def _get_suggestion_card(context: Context, argv: CustomRecognition.AnalyzeArg):
         reco_detail_recommend = context.run_recognition(
             "ProduceChooseCardsSuggestion", argv.image,
             pipeline_override={"ProduceChooseCardsSuggestion": {
