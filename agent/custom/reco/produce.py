@@ -47,11 +47,27 @@ class ProduceChooseIdolAuto(CustomRecognition):
         recognized_name = ""
         recognized_song = ""
 
+        true_end_detail = context.run_recognition(
+            "ProduceChooseIdolTrueEnd", argv.image,
+            pipeline_override={"ProduceChooseIdolTrueEnd": {
+                "recognition": "OCR",
+                "expected": ["True", "End"],
+                "roi": [430, 34, 266, 48]
+            }})
+        if true_end_detail and true_end_detail.hit:
+            logger.debug("识别到True End")
+            idol_name_roi = [440, 128, 280, 64]
+            song_name_roi = [380, 90, 320, 45]
+        else:
+            logger.debug("未识别到True End")
+            idol_name_roi = [400, 98, 320, 64]
+            song_name_roi = [340, 60, 380, 45]
+
         name_detail = context.run_recognition(
             "ProduceChooseIdolName", argv.image,
             pipeline_override={"ProduceChooseIdolName": {
                 "recognition": "OCR",
-                "roi": [400, 128, 320, 64]
+                "roi": idol_name_roi
             }})
         if name_detail and name_detail.hit:
             recognized_name = "".join([item.text for item in name_detail.all_results]).replace(" ", "")
@@ -61,7 +77,7 @@ class ProduceChooseIdolAuto(CustomRecognition):
             "ProduceChooseIdolSong", argv.image,
             pipeline_override={"ProduceChooseIdolSong": {
                 "recognition": "OCR",
-                "roi": [340, 90, 380, 45]
+                "roi": song_name_roi
             }})
         if song_detail and song_detail.hit:
             recognized_song = "".join([item.text for item in song_detail.all_results]).replace("[", "").replace("]", "")
@@ -139,7 +155,7 @@ class ProduceChooseCardsAuto(CustomRecognition):
             argv: CustomRecognition.AnalyzeArg,
     ) -> Union[CustomRecognition.AnalyzeResult, Optional[RectType]]:
         logger.success("事件: 选择卡牌")
-        
+
         # 从节点中获取配置的优先级
         node_data = context.get_node_data("ProduceChooseCards")
         priority = node_data.get("attach", {}).get("priority", [])
