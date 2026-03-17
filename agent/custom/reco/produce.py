@@ -85,7 +85,7 @@ class ProduceChooseIdolAuto(CustomRecognition):
 
         if (self.similarity_ratio(recognized_name, idol_name) >= 0.9 and
                 self.similarity_ratio(recognized_song, song_name) >= 0.7):
-            return CustomRecognition.AnalyzeResult(box=[0, 0, 0, 0], detail={"detail": "识别偶像卡成功"})
+            return CustomRecognition.AnalyzeResult(box=[0, 0, 1, 1], detail={"detail": "识别偶像卡成功"})
         else:
             return CustomRecognition.AnalyzeResult(box=None, detail={"detail": "识别偶像卡失败"})
 
@@ -112,7 +112,7 @@ class ProduceShowStart(CustomRecognition):
         context.run_task("Click_1")
         if height < width:
             logger.success("事件: 演出开始")
-            return CustomRecognition.AnalyzeResult(box=[0, 0, 0, 0], detail={"detail": "屏幕旋转"})
+            return CustomRecognition.AnalyzeResult(box=[0, 0, 1, 1], detail={"detail": "屏幕旋转"})
         return CustomRecognition.AnalyzeResult(box=None, detail={"detail": "屏幕未旋转"})
 
 
@@ -133,7 +133,7 @@ class ProduceShowEnd(CustomRecognition):
         context.run_task("Click_1")
         if height > width:
             logger.success("事件: 演出结束")
-            return CustomRecognition.AnalyzeResult(box=[0, 0, 0, 0], detail={"detail": "屏幕旋转"})
+            return CustomRecognition.AnalyzeResult(box=[0, 0, 1, 1], detail={"detail": "屏幕旋转"})
         return CustomRecognition.AnalyzeResult(box=None, detail={"detail": "屏幕未旋转"})
 
 
