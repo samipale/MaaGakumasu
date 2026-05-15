@@ -103,7 +103,7 @@ class ProduceChooseEventAuto(CustomAction):
             pipeline_override={"ProduceChooseEventSp": {
                 "recognition": "TemplateMatch",
                 "template": "produce/sp.png",
-                "roi": [0, 880, 720, 220]
+                "roi": [0, 880, 720, 300]
             }}
         )
 
@@ -148,7 +148,7 @@ class ProduceChooseEventAuto(CustomAction):
             pipeline_override={"ProduceChooseSuggestion": {
                 "recognition": "TemplateMatch",
                 "template": suggestion_img,
-                "roi": [0, 800, 720, 256]
+                "roi": [0, 800, 720, 300]
             }}
         )
 
@@ -185,7 +185,7 @@ class ProduceChooseEventAuto(CustomAction):
             pipeline_override={"ProduceChooseEventSp": {
                 "recognition": "TemplateMatch",
                 "template": "produce/sp.png",
-                "roi": [0, 880, 720, 220]
+                "roi": [0, 880, 720, 300]
             }}
         )
 
@@ -231,7 +231,7 @@ class ProduceChooseEventAuto(CustomAction):
             pipeline_override={"ProduceChooseSuggestion": {
                 "recognition": "TemplateMatch",
                 "template": suggestion_img,
-                "roi": [0, 800, 720, 256]
+                "roi": [0, 800, 720, 300]
             }}
         )
 
@@ -295,7 +295,7 @@ class ProduceChooseEventAuto(CustomAction):
                 pipeline_override={"ProduceRecognitionEvent": {
                     "recognition": "TemplateMatch",
                     "template": event_img,
-                    "roi": [0, 880, 720, 220]
+                    "roi": [0, 880, 720, 300]
                 }}
             )
             if reco_detail and reco_detail.hit:
